@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+
+    <Button
+        android:id="@+id/facebook_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/facebook_login"
+        android:layout_alignParentBottom="true"
+        android:background="@color/facebook_login_button_color"
+        android:onClick="openFacebookLoginFragment"
+        android:text="@string/login_facebook" />
+
+    <Button
+
+        android:id="@+id/twitter_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/facebook_login"
+        android:background="@color/twitter_login_button_color"
+        android:onClick="openTwitterLoginFragment"
+        android:text="@string/login_twitter" />
+
+
+</RelativeLayout>
