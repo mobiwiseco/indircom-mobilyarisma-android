@@ -15,6 +15,9 @@ import co.mobiwise.indircom.fragment.FacebookLoginFragment;
 import co.mobiwise.indircom.fragment.TwitterLoginFragment;
 import co.mobiwise.indircom.listener.FacebookAuthListener;
 import co.mobiwise.indircom.listener.TwitterAuthListener;
+import co.mobiwise.indircom.utils.SocialConstants;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 /**
  * Created by mac on 13/03/15.
@@ -30,7 +33,6 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
         setContentView(R.layout.activity_login);
 
         initializeViews();
-
     }
 
     private void initializeViews() {
@@ -38,7 +40,6 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
         twitter_login_button = (Button) findViewById(R.id.twitter_login);
 
     }
-
 
     /**
      * Opens FacebookLoginFragment. This method is bound from activity_login.xml.
@@ -52,7 +53,6 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
                 .addToBackStack("FacebookLoginFragment")
                 .commit();
     }
-
 
     /**
      * Opens TwitterLoginFragment. This method is bound from activity_login.xml.
@@ -72,23 +72,28 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
         super.onActivityResult(requestCode, resultCode, data);
         Log.v("indircom", String.valueOf(requestCode));
 
-        if (requestCode == 65536) {
-            Log.v("indircom", "onActivityResult- activity");
-        } else if(requestCode ==Session.DEFAULT_AUTHORIZE_ACTIVITY_CODE) {
-            Log.v("indircom", "onActivityResult- activity-facebook");
+        if (requestCode == SocialConstants.TWITTER_REQUEST_CODE) {
+            Log.v("indircom", "twitter_result");
+        } else if(requestCode == Session.DEFAULT_AUTHORIZE_ACTIVITY_CODE) {
             Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
         }
     }
 
     @Override
-    public boolean onFacebookAuthentication(Session session) {
-        return false;
+    public void onFacebookUserFetched(Session session, GraphUser graphUser) {
+        Log.v("onFacebookUserFetched",graphUser.getId()+"-"+graphUser.getName());
+        //TODO: save shared and do api request.
     }
+
 
     @Override
-    public void onFacebookUserFetched(Session session, GraphUser graphUser) {
-
+    public void onTwitterUserFetched(Twitter mTwitter) {
+        //TODO: save shared and do api request.
+        try {
+            Log.v("LoginActivity",mTwitter.getScreenName()+"");
+        } catch (TwitterException e) {
+            Log.v("LoginActivity","err");
+            e.printStackTrace();
+        }
     }
-
-
 }

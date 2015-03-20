@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import co.mobiwise.indircom.R;
-import co.mobiwise.indircom.utils.Constants;
+import co.mobiwise.indircom.utils.SocialConstants;
 
 /**
  * Created by mac on 19/03/15.
@@ -31,7 +31,7 @@ public class TwitterLoginActivity extends ActionBarActivity {
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 boolean result = true;
-                if (url != null && url.startsWith(Constants.CALLBACK_URL)) {
+                if (url != null && url.startsWith(SocialConstants.CALLBACK_URL)) {
                     Uri uri = Uri.parse(url);
                     if (uri.getQueryParameter("denied") != null) {
                         setResult(RESULT_CANCELED);
@@ -41,8 +41,8 @@ public class TwitterLoginActivity extends ActionBarActivity {
                         String oauthVerifier = uri.getQueryParameter("oauth_verifier");
 
                         Intent intent = getIntent();
-                        intent.putExtra(Constants.IEXTRA_OAUTH_TOKEN, oauthToken);
-                        intent.putExtra(Constants.IEXTRA_OAUTH_VERIFIER, oauthVerifier);
+                        intent.putExtra(SocialConstants.IEXTRA_OAUTH_TOKEN, oauthToken);
+                        intent.putExtra(SocialConstants.IEXTRA_OAUTH_VERIFIER, oauthVerifier);
 
                         setResult(RESULT_OK, intent);
                         finish();
