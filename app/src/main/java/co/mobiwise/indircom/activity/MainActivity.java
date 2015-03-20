@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import co.mobiwise.indircom.R;
-import co.mobiwise.indircom.fragment.VotingFragment;
+import co.mobiwise.indircom.fragment.VoteFragment;
 import co.mobiwise.indircom.listener.ConnectivityChangeListener;
 
 
@@ -20,7 +20,7 @@ public class MainActivity extends ActionBarActivity implements ConnectivityChang
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, VotingFragment.newInstance())
+                    .add(R.id.container, VoteFragment.newInstance())
                     .commit();
         }
     }
