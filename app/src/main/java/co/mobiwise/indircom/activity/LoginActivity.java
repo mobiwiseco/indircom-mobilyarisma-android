@@ -72,9 +72,10 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
         super.onActivityResult(requestCode, resultCode, data);
         Log.v("indircom", String.valueOf(requestCode));
 
-        if (requestCode == 0) {
+        if (requestCode == 65536) {
             Log.v("indircom", "onActivityResult- activity");
-        } else {
+        } else if(requestCode ==Session.DEFAULT_AUTHORIZE_ACTIVITY_CODE) {
+            Log.v("indircom", "onActivityResult- activity-facebook");
             Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
         }
     }

@@ -107,7 +107,7 @@ public class TwitterLoginFragment extends Fragment {
             intent.putExtra(Constants.IEXTRA_AUTH_URL,
                     mRequestToken.getAuthorizationURL());
 
-            getActivity().startActivityFromFragment(TwitterLoginFragment.this, intent, 0);
+            startActivityForResult(intent, 0);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
@@ -116,7 +116,6 @@ public class TwitterLoginFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v("indircom", "onActivityResult- frgment");
-
+        Log.v("indircom", "onActivityResult- frgment"+requestCode);
     }
 }
