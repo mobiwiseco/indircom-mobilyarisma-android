@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.mobiwise.indircom.controller.UserManager;
 import co.mobiwise.indircom.listener.RegistrationListener;
 import co.mobiwise.indircom.listener.VoteControllerListener;
 import co.mobiwise.indircom.model.App;
@@ -57,7 +58,7 @@ public class Api{
     /**
      * Used on Logs.
      */
-    private static String TAG = "Api";
+    private static String TAG = "ApiClass";
 
     /**
      * Private constructor for @Api. Also creates new instance of @RequestQueue.
@@ -107,8 +108,7 @@ public class Api{
                     user.setAuth_id(response_json.getString(ApiConstants.USER_AUTH_ID));
                     user.setName(response_json.getString(ApiConstants.NAME));
                     user.setSurname(response_json.getString(ApiConstants.SURNAME));
-
-                    Log.v(TAG, user.toString());
+                    user.setToken(response_json.getString(ApiConstants.TOKEN));
 
                     if(registration_listener!=null)
                         registration_listener.onUserRegistered(user);
@@ -149,23 +149,71 @@ public class Api{
      * Gets all unvoted apps by user. @VoteControllerListener will be
      * notified when apps are fetched.
      */
-    public void getApps(final int user_auth_id){
+    public void getApps(final String token, final String user_auth_id){
 
-        String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
+        /**
+         * Notify listener with information that unvoted apps started fetching.
+         */
+        if(vote_controller_listener!=null)
+            vote_controller_listener.onAppsStartFetching();
+
+        final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
                                 "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
 
         StringRequest unvoted_apps_request = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                //TODO Handle Response.
+                Log.v(TAG,get_apps_url);
+                Log.v(TAG, user_auth_id);
+                Log.v(TAG,response.toString());
+
+                try {
+                    ArrayList<App> app_list = new ArrayList<>();
+                    JSONObject apps_json_all = new JSONObject(response);
+
+                    /**
+                     * If response 200 then OK.
+                     */
+                    if(apps_json_all.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+
+                        JSONArray app_json_array = apps_json_all.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
+
+                        /**
+                         * Loop for all unvoted apps on json array.
+                         */
+                        for(int i = 0 ; i < app_json_array.length() ; i++){
+
+                            JSONObject app_json_object = app_json_array.getJSONObject(i);
+
+                            App app = new App();
+                            app.setApp_id(Integer.parseInt(app_json_object.getString(ApiConstants.APP_ID)));
+                            app.setApp_name(app_json_object.getString(ApiConstants.APP_NAME));
+                            app.setApp_description(app_json_object.getString(ApiConstants.APP_DESCRIPTION));
+                            app.setApp_download_url(app_json_object.getString(ApiConstants.APP_DOWNLOAD_URL));
+                            app.setApp_image_url(app_json_object.getString(ApiConstants.APP_IMAGE_URL));
+
+                            app_list.add(app);
+                        }
+
+
+                        /**
+                         * Notify listener when apps fetched completed.
+                         */
+                        if(vote_controller_listener!=null)
+                            vote_controller_listener.onAppsFetchCompleted(app_list);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //TODO Handle Error.
+                //TODO Handle Error. Jokin' who cares.
             }
         }){
             @Override
@@ -173,7 +221,7 @@ public class Api{
 
                 //Put required params to maps
                 Map<String, String> maps = new HashMap<String, String>();
-                maps.put(ApiConstants.TOKEN, String.valueOf(user_auth_id));
+                maps.put(ApiConstants.TOKEN, token);
 
                 //return maps. Seriously.
                 return maps;
@@ -209,7 +257,7 @@ public class Api{
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Put required params to maps
                 Map<String, String> maps = new HashMap<String, String>();
-                maps.put(ApiConstants.TOKEN, String.valueOf(user_auth_id));
+                maps.put(ApiConstants.TOKEN, UserManager.getInstance(context).getUser().getToken());
                 maps.put(ApiConstants.RATE, String.valueOf(vote));
 
                 //return maps. Seriously.
@@ -219,11 +267,6 @@ public class Api{
 
         request_queue.add(vote_request);
 
-    }
-
-    private ArrayList<App> convertJsonToApps(JSONArray jsonArray){
-        //TODO convert json to unvoted app list.
-        return null;
     }
 
     public void registerRegistrationListener(RegistrationListener registration_listener){

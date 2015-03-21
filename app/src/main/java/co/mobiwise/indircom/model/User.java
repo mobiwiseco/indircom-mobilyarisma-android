@@ -8,14 +8,17 @@ public class User {
     private String name;
     private String surname;
     private String auth_id;
+    private String token;
 
     public User() {
+        token = "";
     }
 
     public User(String name, String surname, String auth_id) {
         this.name = name;
         this.surname = surname;
         this.auth_id = auth_id;
+        this.token = "";
     }
 
     public String getName() {
@@ -42,10 +45,19 @@ public class User {
         this.auth_id = auth_id;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "Name : " + name + "\n" +
                 "Surname : " + surname + "\n" +
-                "Auth ID : " + auth_id ;
+                "Auth ID : " + auth_id +
+                "Token : " + token;
     }
 }

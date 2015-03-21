@@ -11,6 +11,9 @@ public class App {
     private String app_image_url;
     private String app_download_url;
 
+    public App() {
+    }
+
     public App(int app_id, String app_name, String app_description, String app_image_url, String app_download_url) {
         this.app_id = app_id;
         this.app_name = app_name;

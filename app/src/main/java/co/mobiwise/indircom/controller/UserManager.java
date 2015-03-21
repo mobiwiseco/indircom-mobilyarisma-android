@@ -3,6 +3,8 @@ package co.mobiwise.indircom.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import co.mobiwise.indircom.model.User;
+
 /**
  * Created by mac on 17/03/15.
  */
@@ -32,7 +34,8 @@ public class UserManager {
      * All Shared Preferences Keys
      */
     private static final String IS_USER_LOGIN = "IsUserLoggedIn";
-    private static final String USER_TOKEN = "user_token";
+    private static final String USER_SOCIAL_ID = "user_auth_id";
+    private static final String TOKEN = "token";
     private static final String IS_DEVICE_SAVED = "IsDeviceSaved";
 
     private static UserManager instance = null;
@@ -55,11 +58,13 @@ public class UserManager {
 
     /**
      * Save login status and token when user logged in.
-     * @param user_token
+     * @param token
+     * @param user_social_id
      */
-    public void userLoggedIn(String user_token) {
+    public void userLoggedIn(String token, String user_social_id) {
         editor.putBoolean(IS_USER_LOGIN, true);
-        editor.putString(USER_TOKEN,user_token);
+        editor.putString(USER_SOCIAL_ID,user_social_id);
+        editor.putString(TOKEN,token);
         editor.commit();
     }
 
@@ -83,8 +88,11 @@ public class UserManager {
      * Gets token for user. 0 if no token saved.
      * @return
      */
-    public String getUserToken(){
-        return pref.getString(USER_TOKEN,"");
+    public User getUser(){
+        User user = new User();
+        user.setAuth_id(pref.getString(USER_SOCIAL_ID,""));
+        user.setToken(pref.getString(TOKEN,""));
+        return user;
     }
 
 }

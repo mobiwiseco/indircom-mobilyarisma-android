@@ -39,6 +39,13 @@ public class ApiConstants {
     public static int DISLIKE = 0;
 
     /**
+     * Return codes
+     */
+    public static String OK = "200";
+    public static String NOT_FOUND = "404";
+
+
+    /**
      * Post parameters
      */
     public static String NAME = "name";

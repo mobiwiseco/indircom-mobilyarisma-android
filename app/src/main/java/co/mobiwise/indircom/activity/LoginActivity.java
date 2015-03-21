@@ -125,7 +125,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
     @Override
     public void onUserRegistered(User user) {
         //Register auth info to shared preferences
-        UserManager.getInstance(getApplicationContext()).userLoggedIn(user.getAuth_id());
+        UserManager.getInstance(getApplicationContext()).userLoggedIn(user.getToken(), user.getAuth_id());
 
         //start main activity.
         Intent i = new Intent(this, MainActivity.class);
