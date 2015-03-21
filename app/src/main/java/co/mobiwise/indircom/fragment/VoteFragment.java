@@ -32,7 +32,7 @@ public class VoteFragment extends Fragment implements VoteControllerListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_voting, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_vote, container, false);
         return rootView;
     }
 
