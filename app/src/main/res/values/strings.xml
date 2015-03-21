@@ -8,6 +8,9 @@
     <string name="login_twitter">Twitter ile giriş</string>
     <string name="facebook_app_id">726648720787445</string>
     <string name="loading_page_message">Sayfa yükleniyor.</string>
+    <string name="about">Hakkında</string>
+    <string name="indircom_app_name">app_name</string>
+    <string name="app_category_place_holder">indircom app category</string>
 
 
 </resources>

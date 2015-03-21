@@ -11,17 +11,17 @@ import co.mobiwise.indircom.R;
 /**
  * Created by mac on 14/03/15.
  */
-public class AboutFragment extends Fragment {
-    public AboutFragment() {
+public class AppDetailFragment extends Fragment {
+    public AppDetailFragment() {
     }
 
     /**
      * Static factory method that returns the
      * new fragment to the client.
      */
-    public static AboutFragment newInstance() {
-        AboutFragment aboutFragment = new AboutFragment();
-        return aboutFragment;
+    public static AppDetailFragment newInstance() {
+        AppDetailFragment appDetailFragment = new AppDetailFragment();
+        return appDetailFragment;
     }
 
     @Override

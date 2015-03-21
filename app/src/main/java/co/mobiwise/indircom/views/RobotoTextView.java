@@ -26,7 +26,7 @@ public class RobotoTextView extends TextView {
     }
 
     private void init() {
-        Typeface tf = Typeface.createFromAsset(getContext().getResources().getAssets(), "myriad.ttf");
+        Typeface tf = Typeface.createFromAsset(getContext().getResources().getAssets(), "robotolight.ttf");
         setTypeface(tf);
     }
 }
