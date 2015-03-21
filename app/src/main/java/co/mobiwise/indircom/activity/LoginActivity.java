@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
@@ -15,6 +16,7 @@ import co.mobiwise.indircom.fragment.FacebookLoginFragment;
 import co.mobiwise.indircom.fragment.TwitterLoginFragment;
 import co.mobiwise.indircom.listener.FacebookAuthListener;
 import co.mobiwise.indircom.listener.TwitterAuthListener;
+import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.utils.SocialConstants;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -47,11 +49,15 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
      * @param view
      */
     public void openFacebookLoginFragment(View view) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(android.R.id.content, FacebookLoginFragment.newInstance())
-                .addToBackStack("FacebookLoginFragment")
-                .commit();
+        if (Connectivity.isConnected(getApplicationContext())) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, FacebookLoginFragment.newInstance())
+                    .addToBackStack("FacebookLoginFragment")
+                    .commit();
+        } else
+            showConnectionError();
+
     }
 
     /**
@@ -60,11 +66,14 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
      * @param view
      */
     public void openTwitterLoginFragment(View view) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(android.R.id.content, TwitterLoginFragment.newInstance())
-                .addToBackStack("TwitterLoginFragment")
-                .commit();
+        if (Connectivity.isConnected(getApplicationContext())) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, TwitterLoginFragment.newInstance())
+                    .addToBackStack("TwitterLoginFragment")
+                    .commit();
+        } else
+            showConnectionError();
     }
 
     @Override
@@ -74,14 +83,14 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
 
         if (requestCode == SocialConstants.TWITTER_REQUEST_CODE) {
             Log.v("indircom", "twitter_result");
-        } else if(requestCode == Session.DEFAULT_AUTHORIZE_ACTIVITY_CODE) {
+        } else if (requestCode == Session.DEFAULT_AUTHORIZE_ACTIVITY_CODE) {
             Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
         }
     }
 
     @Override
     public void onFacebookUserFetched(Session session, GraphUser graphUser) {
-        Log.v("onFacebookUserFetched",graphUser.getId()+"-"+graphUser.getName());
+        Log.v("onFacebookUserFetched", graphUser.getId() + "-" + graphUser.getName());
         //TODO: save shared and do api request.
     }
 
@@ -90,10 +99,14 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
     public void onTwitterUserFetched(Twitter mTwitter) {
         //TODO: save shared and do api request.
         try {
-            Log.v("LoginActivity",mTwitter.getScreenName()+"");
+            Log.v("LoginActivity", mTwitter.getScreenName() + "");
         } catch (TwitterException e) {
-            Log.v("LoginActivity","err");
+            Log.v("LoginActivity", "err");
             e.printStackTrace();
         }
+    }
+
+    public void showConnectionError() {
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
     }
 }

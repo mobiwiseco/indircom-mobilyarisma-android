@@ -36,7 +36,6 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
     @Override
     public void call(Session session, SessionState sessionState, Exception e) {
         Log.d(TAG, "Session opened ? " + session.isOpened());
-
         //&& facebookAuthListener.onFacebookAuthentication(session)
         if (session.isOpened() ) {
             getUserData(session);

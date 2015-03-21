@@ -8,6 +8,7 @@
     <string name="login_twitter">Twitter ile giriş</string>
     <string name="facebook_app_id">726648720787445</string>
     <string name="loading_page_message">Sayfa yükleniyor.</string>
+    <string name="connection_error">Lütfen internet bağlantınızı kontrol ediniz.</string>
 
 
 </resources>

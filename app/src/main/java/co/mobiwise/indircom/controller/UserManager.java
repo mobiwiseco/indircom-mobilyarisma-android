@@ -52,6 +52,8 @@ public class UserManager {
         editor.clear();
         editor.commit();
     }
-
+    public boolean isLogin(){
+        return pref.getBoolean(IS_USER_LOGIN,false);
+    }
 
 }
