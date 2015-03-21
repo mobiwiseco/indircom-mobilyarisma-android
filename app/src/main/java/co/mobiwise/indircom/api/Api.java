@@ -1,6 +1,7 @@
 package co.mobiwise.indircom.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,11 +12,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.mobiwise.indircom.listener.RegistrationListener;
 import co.mobiwise.indircom.listener.VoteControllerListener;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
@@ -25,13 +29,35 @@ import co.mobiwise.indircom.model.User;
  */
 public class Api{
 
+    /**
+     * Application context to use get instance of volley object.
+     */
     private Context context;
 
+    /**
+     * Volley request to put requests.
+     */
     private RequestQueue request_queue;
 
+    /**
+     * RegistrationListener methods will be notified when user registration process.
+     */
+    private RegistrationListener registration_listener;
+
+    /**
+     * VoteControllerListener methods will be notified while user vote process
+     */
     private VoteControllerListener vote_controller_listener;
 
+    /**
+     * Api instance. Seriously.
+     */
     private static Api instance = null;
+
+    /**
+     * Used on Logs.
+     */
+    private static String TAG = "Api";
 
     /**
      * Private constructor for @Api. Also creates new instance of @RequestQueue.
@@ -61,20 +87,41 @@ public class Api{
      */
     public void registerUser(final User user){
 
+        //Notify listener registration started
+        if(registration_listener!=null)
+            registration_listener.onUserRegistrationStarted();
+
+        //create webservice url
         String register_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION + ApiConstants.METHOD_REGISTER;
 
+        //initialize post request object for registration
         StringRequest register_request = new StringRequest(Request.Method.POST, register_url, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
 
-                //TODO Handle Response.
+                try {
+                    Log.v(TAG,response.toString());
+                    JSONObject response_json = new JSONObject(response.toString()).getJSONArray(ApiConstants.JSON_NAME_USER).getJSONObject(0);
+                    User user = new User();
+                    user.setAuth_id(response_json.getString(ApiConstants.USER_AUTH_ID));
+                    user.setName(response_json.getString(ApiConstants.NAME));
+                    user.setSurname(response_json.getString(ApiConstants.SURNAME));
 
+                    Log.v(TAG, user.toString());
+
+                    if(registration_listener!=null)
+                        registration_listener.onUserRegistered(user);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //TODO Handle Error.
+                //TODO Handle Error. Jokin' who cares.
 
             }
         }){
@@ -93,6 +140,7 @@ public class Api{
             }
         };
 
+        //adds request to request queue
         request_queue.add(register_request);
 
     }
@@ -178,5 +226,19 @@ public class Api{
         return null;
     }
 
+    public void registerRegistrationListener(RegistrationListener registration_listener){
+        this.registration_listener = registration_listener;
+    }
 
+    public void unregisterRegistrationListener(){
+        this.registration_listener = null;
+    }
+
+    public void registerVoteControllerListener(VoteControllerListener vote_controller_listener){
+        this.vote_controller_listener = vote_controller_listener;
+    }
+
+    public void unregisterVoteControllerListener(){
+        this.vote_controller_listener = null;
+    }
 }

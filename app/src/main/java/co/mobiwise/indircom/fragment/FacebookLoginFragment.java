@@ -11,7 +11,8 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
-import co.mobiwise.indircom.listener.FacebookAuthListener;
+import co.mobiwise.indircom.listener.SocialAuthListener;
+import co.mobiwise.indircom.model.User;
 
 /**
  * Created by mac on 17/03/15.
@@ -19,7 +20,7 @@ import co.mobiwise.indircom.listener.FacebookAuthListener;
 public class FacebookLoginFragment extends Fragment implements Session.StatusCallback {
 
     private static final String TAG = "FacebookLoginFragment";
-    private FacebookAuthListener facebookAuthListener;
+    private SocialAuthListener socialAuthListener;
 
     public FacebookLoginFragment() {
     }
@@ -37,7 +38,7 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
     public void call(Session session, SessionState sessionState, Exception e) {
         Log.d(TAG, "Session opened ? " + session.isOpened());
         //&& facebookAuthListener.onFacebookAuthentication(session)
-        if (session.isOpened() ) {
+        if (session.isOpened()) {
             getUserData(session);
         }
     }
@@ -52,8 +53,14 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
         Request.newMeRequest(session, new Request.GraphUserCallback() {
             @Override
             public void onCompleted(GraphUser graphUser, Response response) {
-                Log.d(TAG, "User info is fetched from Facebook.");
-                facebookAuthListener.onFacebookUserFetched(session, graphUser);
+                //initialize user
+                User user = new User();
+                user.setAuth_id(graphUser.getId());
+                user.setName(graphUser.getName());
+                user.setSurname(graphUser.getLastName());
+
+                //Notify social auth listener by user.
+                socialAuthListener.onSocialUserFetched(user);
             }
         }).executeAsync();
     }
@@ -69,7 +76,7 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
         super.onActivityCreated(savedInstanceState);
 
         try {
-            facebookAuthListener = (FacebookAuthListener) getActivity();
+            socialAuthListener = (SocialAuthListener) getActivity();
         } catch (ClassCastException e) {
             throw new RuntimeException("The activity that contains FacebookLoginFragment must implement FacebookLoginFragment.FacebookAuthListener");
         }

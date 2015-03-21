@@ -5,17 +5,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.activity.TwitterLoginActivity;
-import co.mobiwise.indircom.listener.TwitterAuthListener;
+import co.mobiwise.indircom.listener.SocialAuthListener;
 import co.mobiwise.indircom.utils.SocialConstants;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
@@ -26,7 +26,7 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public class TwitterLoginFragment extends Fragment {
 
-    private TwitterAuthListener twitterAuthListener;
+    private SocialAuthListener socialAuthListener;
     private Twitter mTwitter;
     private RequestToken mRequestToken;
 
@@ -47,7 +47,7 @@ public class TwitterLoginFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         try {
-            twitterAuthListener = (TwitterAuthListener) getActivity();
+            socialAuthListener = (SocialAuthListener) getActivity();
         } catch (ClassCastException e) {
             throw new RuntimeException("The activity must implement TwitterAuthListener");
         }
@@ -71,16 +71,41 @@ public class TwitterLoginFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v("indircom", "onActivityResult- frgment" + requestCode);
-        AccessToken accessToken = null;
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        final AccessToken[] accessToken = {null};
+        final String[] oauthVerifier = new String[1];
         try {
-            String oauthVerifier = data.getExtras().getString(
-                    SocialConstants.IEXTRA_OAUTH_VERIFIER);
-            accessToken = mTwitter.getOAuthAccessToken(mRequestToken,
-                    oauthVerifier);
-            //TODO: save access token!
-            twitterAuthListener.onTwitterUserFetched(mTwitter);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    oauthVerifier[0] = data.getExtras().getString(
+                            SocialConstants.IEXTRA_OAUTH_VERIFIER);
+                    try {
+                        accessToken[0] = mTwitter.getOAuthAccessToken(mRequestToken,
+                                oauthVerifier[0]);
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        //Gets twitter user info
+                        User user_4j = mTwitter.showUser(mTwitter.getScreenName());
+
+                        //Creates user data model
+                        co.mobiwise.indircom.model.User user_model = new co.mobiwise.indircom.model.User();
+                        user_model.setAuth_id(String.valueOf(user_4j.getId()));
+                        user_model.setName(user_4j.getName().substring(0, user_4j.getName().indexOf(" ")));
+                        user_model.setSurname(user_4j.getName().substring(user_4j.getName().indexOf(" ")));
+
+                        //notify @TwitterAuthListener by user data model
+                        socialAuthListener.onSocialUserFetched(user_model);
+
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -123,3 +148,5 @@ public class TwitterLoginFragment extends Fragment {
         }
     }
 }
+
+

@@ -5,25 +5,108 @@
     android:background="@drawable/bg">
 
 
-    <Button
-        android:id="@+id/facebook_login"
+    <RelativeLayout
+        android:id="@+id/layout_facebook_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebook_login"
         android:layout_alignParentBottom="true"
-        android:background="@color/facebook_login_button_color"
         android:onClick="openFacebookLoginFragment"
-        android:text="@string/login_facebook" />
+        android:background="@color/facebook_login_button_color"
+        android:gravity="center"
+        android:padding="14dp">
 
-    <Button
+        <ImageView
+            android:id="@+id/icon_facebook"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_facebook"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"/>
 
-        android:id="@+id/twitter_login"
+        <co.mobiwise.indircom.views.RobotoTextView
+            android:id="@+id/textview_facebook_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_facebook"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:textColor="@color/color_white"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/icon_facebook"
+            android:layout_toEndOf="@+id/icon_facebook" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_twitter_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebook_login"
-        android:background="@color/twitter_login_button_color"
         android:onClick="openTwitterLoginFragment"
-        android:text="@string/login_twitter" />
+        android:layout_above="@+id/layout_facebook_login"
+        android:background="@color/twitter_login_button_color"
+        android:gravity="center"
+        android:padding="14dp">
+
+        <ImageView
+            android:id="@+id/icon_twitter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_twitter"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"/>
+
+        <co.mobiwise.indircom.views.RobotoTextView
+            android:id="@+id/textview_twitter_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_twitter"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:textColor="@color/color_white"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/icon_twitter"
+            android:layout_toEndOf="@+id/icon_twitter" />
+
+    </RelativeLayout>
+    
+    
+    <ImageView
+        android:id="@+id/imageview_circle_cover"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/image_cover"/>
+
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_header_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/header_login"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageview_circle_cover"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:textColor="@color/color_blue_dark"/>
+
+    <co.mobiwise.indircom.views.RobotoTextView
+        android:id="@+id/textview_content_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textview_header_login"
+        android:layout_marginTop="10dp"
+        android:text="@string/content_info"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/color_blue_dark_2"
+        android:textSize="16sp"/>
+
 
 
 </RelativeLayout>

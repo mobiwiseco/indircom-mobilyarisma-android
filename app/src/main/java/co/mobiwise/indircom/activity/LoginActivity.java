@@ -5,42 +5,49 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.Session;
-import com.facebook.model.GraphUser;
 
 import co.mobiwise.indircom.R;
+import co.mobiwise.indircom.api.Api;
+import co.mobiwise.indircom.controller.UserManager;
 import co.mobiwise.indircom.fragment.FacebookLoginFragment;
 import co.mobiwise.indircom.fragment.TwitterLoginFragment;
-import co.mobiwise.indircom.listener.FacebookAuthListener;
-import co.mobiwise.indircom.listener.TwitterAuthListener;
+import co.mobiwise.indircom.listener.RegistrationListener;
+import co.mobiwise.indircom.listener.SocialAuthListener;
+import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.utils.SocialConstants;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
 /**
  * Created by mac on 13/03/15.
  */
-public class LoginActivity extends ActionBarActivity implements FacebookAuthListener, TwitterAuthListener {
+public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
     private static final String TAG = "LoginActivity";
-    private Button facebook_login_button, twitter_login_button;
+    private RelativeLayout facebook_login_layout, twitter_login_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        if(UserManager.getInstance(getApplicationContext()).isLogin()){
+            Intent i = new Intent(this, MainActivity.class);
+            finish();
+            startActivity(i);
+        }
+
+        setContentView(R.layout.activity_login);
         initializeViews();
+        Api.getInstance(getApplicationContext()).registerRegistrationListener(this);
+
     }
 
     private void initializeViews() {
-        facebook_login_button = (Button) findViewById(R.id.facebook_login);
-        twitter_login_button = (Button) findViewById(R.id.twitter_login);
-
+        facebook_login_layout = (RelativeLayout) findViewById(R.id.layout_facebook_login);
+        twitter_login_layout = (RelativeLayout) findViewById(R.id.layout_twitter_login);
     }
 
     /**
@@ -79,7 +86,6 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.v("indircom", String.valueOf(requestCode));
 
         if (requestCode == SocialConstants.TWITTER_REQUEST_CODE) {
             Log.v("indircom", "twitter_result");
@@ -88,25 +94,49 @@ public class LoginActivity extends ActionBarActivity implements FacebookAuthList
         }
     }
 
+    /**
+     * Notified when facebook or twitter user logged in.
+     * @param user
+     */
     @Override
-    public void onFacebookUserFetched(Session session, GraphUser graphUser) {
-        Log.v("onFacebookUserFetched", graphUser.getId() + "-" + graphUser.getName());
-        //TODO: save shared and do api request.
+    public void onSocialUserFetched(User user) {
+        Api.getInstance(getApplicationContext()).registerUser(user);
     }
 
-
-    @Override
-    public void onTwitterUserFetched(Twitter mTwitter) {
-        //TODO: save shared and do api request.
-        try {
-            Log.v("LoginActivity", mTwitter.getScreenName() + "");
-        } catch (TwitterException e) {
-            Log.v("LoginActivity", "err");
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Connection error
+     */
     public void showConnectionError() {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Notified when user registration started after social login.
+     */
+    @Override
+    public void onUserRegistrationStarted() {
+        //TODO start loading dialog
+    }
+
+    /**
+     * Will be notified when user registration completed.
+     * @param user
+     */
+    @Override
+    public void onUserRegistered(User user) {
+        //Register auth info to shared preferences
+        UserManager.getInstance(getApplicationContext()).userLoggedIn(user.getAuth_id());
+
+        //start main activity.
+        Intent i = new Intent(this, MainActivity.class);
+        finish();
+        startActivity(i);
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Unregister listener no need anymore.
+        Api.getInstance(getApplicationContext()).unregisterRegistrationListener();
+        super.onDestroy();
     }
 }

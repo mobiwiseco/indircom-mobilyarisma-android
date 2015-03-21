@@ -8,12 +8,12 @@ public class ApiConstants {
     /**
      * Server domain
      */
-    public static String BASE_URL = "http://mobiwise.co";
+    public static String BASE_URL = "http://www.akilliyazilim.org/indircom/";
 
     /**
      * Web app domain
      */
-    public static String WEBSERVICE_URL = "/indir.com/public/api/";
+    public static String WEBSERVICE_URL = "indir.com/public/api/";
 
     /**
      * Api version
@@ -56,6 +56,7 @@ public class ApiConstants {
     public static String CODE = "code";
     public static String MESSAGE = "message";
     public static String ARRAY_NAME_APPS = "apps";
+    public static String JSON_NAME_USER = "user";
     public static String APP_ID = "app_id";
     public static String APP_NAME = "app_name";
     public static String APP_DESCRIPTION = "app_description";

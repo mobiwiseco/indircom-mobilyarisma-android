@@ -3,6 +3,9 @@
     <color name="facebook_login_button_color">#3b5998</color>
     <color name="twitter_login_button_color">#55acee</color>
 
+    <color name="color_blue_dark">#0b7098</color>
+    <color name="color_blue_dark_2">#244b5a</color>
+
     <color name="gm_primary_color">#27ab93</color>
     <color name="gm_background">#ffffff</color>
     <color name="color_main">#25ab93</color>

@@ -7,9 +7,12 @@ public class User {
 
     private String name;
     private String surname;
-    private int auth_id;
+    private String auth_id;
 
-    public User(String name, String surname, int auth_id) {
+    public User() {
+    }
+
+    public User(String name, String surname, String auth_id) {
         this.name = name;
         this.surname = surname;
         this.auth_id = auth_id;
@@ -31,11 +34,11 @@ public class User {
         this.surname = surname;
     }
 
-    public int getAuth_id() {
+    public String getAuth_id() {
         return auth_id;
     }
 
-    public void setAuth_id(int auth_id) {
+    public void setAuth_id(String auth_id) {
         this.auth_id = auth_id;
     }
 

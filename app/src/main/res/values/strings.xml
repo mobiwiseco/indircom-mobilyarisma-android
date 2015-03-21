@@ -9,6 +9,8 @@
     <string name="facebook_app_id">726648720787445</string>
     <string name="loading_page_message">Sayfa yükleniyor.</string>
     <string name="connection_error">Lütfen internet bağlantınızı kontrol ediniz.</string>
+    <string name="header_login">Mobil uygulamalar yarışıyor!</string>
+    <string name="content_info">Halk oylamasından geçen 10 uygulama jüri tarafından değerlendiriliyor. Kazanan uygulamalar büyük ödüllere kavuşuyor.</string>
 
 
 </resources>
