@@ -47,7 +47,7 @@ public class Api{
     /**
      * VoteControllerListener methods will be notified while user vote process
      */
-    private VoteControllerListener vote_controller_listener;
+    private ArrayList<VoteControllerListener> vote_controller_listener_list;
 
     /**
      * Api instance. Seriously.
@@ -152,8 +152,10 @@ public class Api{
         /**
          * Notify listener with information that unvoted apps started fetching.
          */
-        if(vote_controller_listener!=null)
-            vote_controller_listener.onAppsStartFetching();
+        if(vote_controller_listener_list !=null){
+            for(VoteControllerListener listener : vote_controller_listener_list)
+                listener.onAppsStartFetching();
+        }
 
         final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
                                 "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
@@ -194,8 +196,10 @@ public class Api{
                         /**
                          * Notify listener when apps fetched completed.
                          */
-                        if(vote_controller_listener!=null)
-                            vote_controller_listener.onAppsFetchCompleted(app_list);
+                        if(vote_controller_listener_list !=null){
+                            for(VoteControllerListener listener : vote_controller_listener_list)
+                                listener.onAppsFetchCompleted(app_list);
+                        }
 
                     }
                 } catch (JSONException e) {
@@ -234,8 +238,10 @@ public class Api{
         /**
          * Notify vote controller listener vote start.
          */
-        if(vote_controller_listener!=null)
-            vote_controller_listener.onVoteStartSending();
+        if(vote_controller_listener_list !=null){
+            for(VoteControllerListener listener : vote_controller_listener_list)
+                listener.onVoteStartSending();
+        }
 
         String vote_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
                 "/" + user_auth_id + ApiConstants.METHOD_RATE + "/" + String.valueOf(app_id);
@@ -255,8 +261,10 @@ public class Api{
                         /**
                          * Notify listener when app vote completed.
                          */
-                        if(vote_controller_listener != null)
-                            vote_controller_listener.onVoteCompleted(app_id);
+                        if(vote_controller_listener_list !=null){
+                            for(VoteControllerListener listener : vote_controller_listener_list)
+                                listener.onVoteCompleted(app_id);
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -306,13 +314,13 @@ public class Api{
      * @param vote_controller_listener
      */
     public void registerVoteControllerListener(VoteControllerListener vote_controller_listener){
-        this.vote_controller_listener = vote_controller_listener;
+        this.vote_controller_listener_list.add(vote_controller_listener);
     }
 
     /**
      * Unregister receiver no needed use.
      */
-    public void unregisterVoteControllerListener(){
-        this.vote_controller_listener = null;
+    public void unregisterVoteControllerListener(VoteControllerListener vote_controller_listener){
+        this.vote_controller_listener_list.remove(vote_controller_listener);
     }
 }
