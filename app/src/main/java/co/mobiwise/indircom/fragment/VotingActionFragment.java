@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.listener.PagerCurrentItemListener;
+import co.mobiwise.indircom.views.RobotoMediumTextView;
+import co.mobiwise.indircom.views.RobotoTextView;
 
 /**
  * Created by mac on 21/03/15.
@@ -42,7 +44,8 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
 
     private ImageView imageview_app_image, imageview_app_like, imageview_app_info, imageview_app_dislike;
-    private TextView textview_app_name, textview_app_category;
+    private RobotoMediumTextView textview_app_name;
+    private RobotoTextView textview_app_category;
 
     /**
      * Factory method for this fragment class
@@ -95,8 +98,8 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         imageview_app_dislike.setOnClickListener(this);
 
 
-        textview_app_name = (TextView) view.findViewById(R.id.textview_app_name);
-        textview_app_category = (TextView) view.findViewById(R.id.textview_app_category);
+        textview_app_name = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
+        textview_app_category = (RobotoTextView) view.findViewById(R.id.textview_app_category);
 
         textview_app_name.setText(String.valueOf(getPageNumber()));
         textview_app_category.setText(String.valueOf(getPageNumber()));

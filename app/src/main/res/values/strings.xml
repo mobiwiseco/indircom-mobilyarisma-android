@@ -9,8 +9,10 @@
     <string name="facebook_app_id">726648720787445</string>
     <string name="loading_page_message">Sayfa yükleniyor.</string>
     <string name="about">Hakkında</string>
-    <string name="indircom_app_name">app_name</string>
+    <string name="indircom_app_name_place_holder">app_name</string>
     <string name="app_category_place_holder">indircom app category</string>
+    <string name="app_description_placeholder">indircom_app_description</string>
+    <string name="app_download_message">İNDİR</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.fragment.MainVotingPageFragment;
+import co.mobiwise.indircom.fragment.VotingActionFragment;
 import co.mobiwise.indircom.listener.ConnectivityChangeListener;
 import co.mobiwise.indircom.listener.PagerCurrentItemListener;
 
