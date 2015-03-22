@@ -6,8 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import co.mobiwise.indircom.R;
-import co.mobiwise.indircom.fragment.VoteFragment;
 import co.mobiwise.indircom.listener.ConnectivityChangeListener;
+import co.mobiwise.indircom.listener.PagerCurrentItemListener;
 
 
 public class MainActivity extends ActionBarActivity implements ConnectivityChangeListener {
@@ -20,7 +20,7 @@ public class MainActivity extends ActionBarActivity implements ConnectivityChang
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, VoteFragment.newInstance())
+                    .add(R.id.container, MainVotingPageFragment.newInstance())
                     .commit();
         }
     }
@@ -59,4 +59,8 @@ public class MainActivity extends ActionBarActivity implements ConnectivityChang
 
     }
 
+    @Override
+    public void setCurrentPage(int position) {
+        MainVotingPageFragment.setCurrentItem(position);
+    }
 }

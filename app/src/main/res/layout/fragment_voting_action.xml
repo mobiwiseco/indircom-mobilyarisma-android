@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pink">
+
+    <ImageView
+        android:id="@+id/imageview_app_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/textview_app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/app_logo" />
+
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="70dp"
+        android:gravity="center_horizontal"
+        android:text="@string/indircom_app_name_place_holder"
+        android:textSize="20sp" />
+
+    <co.mobiwise.indircom.views.RobotoTextView
+        android:id="@+id/textview_app_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageview_app_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/app_category_place_holder"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_app_category"
+        android:layout_marginTop="64dp">
+
+        <ImageView
+            android:id="@+id/imageview_app_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="32dp"
+            android:layout_toLeftOf="@+id/imageview_app_info"
+            android:src="@drawable/ic_dislike" />
+
+
+        <ImageView
+            android:id="@+id/imageview_app_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_info" />
+
+        <ImageView
+            android:id="@+id/imageview_app_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="32dp"
+            android:layout_toRightOf="@id/imageview_app_info"
+            android:src="@drawable/ic_like" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
