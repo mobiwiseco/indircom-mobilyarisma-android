@@ -1,32 +1,36 @@
 package co.mobiwise.indircom.fragment;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.nineoldandroids.animation.Animator;
 
 import co.mobiwise.indircom.R;
-import co.mobiwise.indircom.listener.PagerCurrentItemListener;
-import co.mobiwise.indircom.views.RobotoMediumTextView;
-import co.mobiwise.indircom.views.RobotoTextView;
+import co.mobiwise.indircom.listener.VotingActionFragmentCallback;
 
 /**
  * Created by mac on 21/03/15.
  */
-public class VotingActionFragment extends Fragment implements View.OnClickListener {
+public class VotingActionFragment extends Fragment implements View.OnClickListener{
 
-    private PagerCurrentItemListener pagerCurrentItemListener;
+    /**
+     * To notify necessary method when vote action fragment process happen.
+     */
+    private VotingActionFragmentCallback voting_action_fragment_callback;
 
+    /**
+     * TAG to log.
+     */
     public static final String TAG = "VotingActionFragment";
 
     /**
@@ -43,9 +47,9 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      * VotingActionFragment views
      */
 
-    private ImageView imageview_app_image, imageview_app_like, imageview_app_info, imageview_app_dislike;
-    private RobotoMediumTextView textview_app_name;
-    private RobotoTextView textview_app_category;
+    private RoundedImageView imageview_app;
+    private ImageView imageview_like;
+    private ImageView imageview_dislike;
 
     /**
      * Factory method for this fragment class
@@ -85,25 +89,12 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
     private void initializeView(View view) {
 
-        Log.v(TAG, String.valueOf(getPageNumber()));
+        imageview_app = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
+        imageview_like = (ImageView) view.findViewById(R.id.image_like);
+        imageview_dislike = (ImageView) view.findViewById(R.id.image_dislike);
 
-        imageview_app_image = (ImageView) view.findViewById(R.id.imageview_app_image);
-        imageview_app_like = (ImageView) view.findViewById(R.id.imageview_app_like);
-        imageview_app_info = (ImageView) view.findViewById(R.id.imageview_app_info);
-        imageview_app_dislike = (ImageView) view.findViewById(R.id.imageview_app_dislike);
-
-        imageview_app_image.setOnClickListener(this);
-        imageview_app_like.setOnClickListener(this);
-        imageview_app_info.setOnClickListener(this);
-        imageview_app_dislike.setOnClickListener(this);
-
-
-        textview_app_name = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
-        textview_app_category = (RobotoTextView) view.findViewById(R.id.textview_app_category);
-
-        textview_app_name.setText(String.valueOf(getPageNumber()));
-        textview_app_category.setText(String.valueOf(getPageNumber()));
-
+        imageview_like.setOnClickListener(this);
+        imageview_dislike.setOnClickListener(this);
     }
 
     /**
@@ -113,7 +104,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
 
         return mPageNumber;
     }
-
 
     /**
      * OnClick method for imageview's
@@ -125,15 +115,17 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
 
         switch (v.getId()) {
             case R.id.imageview_app_image:
-                pagerCurrentItemListener.setCurrentPage(mPageNumber + 1);
+                voting_action_fragment_callback.setCurrentPage(mPageNumber + 1);
                 break;
-            case R.id.imageview_app_like:
-                imageViewAnimatedChange(getActivity().getApplicationContext(), imageview_app_like, convertDrawabletoBitmap(R.drawable.ic_launcher));
+            case R.id.image_like:
+                //TODO send request to request queue
+                imageview_like.setBackgroundResource(R.drawable.icon_like_selected);
+                animateVoteImagesOnVote(imageview_like);
                 break;
-            case R.id.imageview_app_info:
-                break;
-            case R.id.imageview_app_dislike:
-                imageViewAnimatedChange(getActivity().getApplicationContext(), imageview_app_dislike, convertDrawabletoBitmap(R.drawable.ic_launcher));
+            case R.id.image_dislike:
+                //TODO send request to request queue
+                imageview_dislike.setBackgroundResource(R.drawable.icon_dislike_selected);
+                animateVoteImagesOnVote(imageview_dislike);
                 break;
             default:
                 break;
@@ -143,54 +135,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        try {
-            pagerCurrentItemListener = (PagerCurrentItemListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new RuntimeException("The activity that contains MainVotingPageFragment must implement FacebookLoginFragment.FacebookAuthListener");
-        }
     }
-
-    /**
-     * Creating animation on ImageView while changing image resource
-     *
-     * @param c         context
-     * @param v         imageview
-     * @param new_image image reource
-     */
-    public void imageViewAnimatedChange(Context c, final ImageView v, final Bitmap new_image) {
-        final Animation anim_out = AnimationUtils.loadAnimation(c, android.R.anim.fade_out);
-        final Animation anim_in = AnimationUtils.loadAnimation(c, android.R.anim.fade_in);
-        anim_out.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                v.setImageBitmap(new_image);
-                anim_in.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                    }
-                });
-                v.startAnimation(anim_in);
-            }
-        });
-        v.startAnimation(anim_out);
-    }
-
 
     /**
      * convert a Drawable to a Bitmap
@@ -202,4 +147,54 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         return BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
                 image_resource);
     }
+
+    /**
+     * Animator of clicked vote button
+     * @param imageView
+     */
+    private void animateVoteImagesOnVote(ImageView imageView){
+
+        /**
+         * Set like buttons non-clickable
+         */
+        imageview_dislike.setClickable(false);
+        imageview_like.setClickable(false);
+
+        /**
+         * Animate clicked vote button and notify to change app when animation end.
+         * It is enough to set listener to one of them. Could not found set multiple
+         * animation setter in @YoYo library.
+         */
+        YoYo.with(Techniques.Pulse).duration(700).playOn(imageView);
+        YoYo.with(Techniques.Swing).duration(700).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                voting_action_fragment_callback.onVotingAnimationEnd();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).playOn(imageView);
+    }
+
+    /**
+     * set MainVotingFragment to give call back.
+     * @param voting_action_fragment_callback
+     */
+    public void setVotingActionCallback(VotingActionFragmentCallback voting_action_fragment_callback){
+        this.voting_action_fragment_callback = voting_action_fragment_callback;
+    }
+
 }

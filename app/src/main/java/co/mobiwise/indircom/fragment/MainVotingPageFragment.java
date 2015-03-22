@@ -5,21 +5,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.adapter.ViewPagerAdapter;
-import co.mobiwise.indircom.listener.PagerCurrentItemListener;
+import co.mobiwise.indircom.listener.VotingActionFragmentCallback;
 
 /**
  * Created by mac on 13/03/15.
  */
-public class MainVotingPageFragment extends Fragment {
+public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback{
 
-    private PagerCurrentItemListener pagerCurrentItemListener;
     /**
      * To achieve mPager from MainActivity, define as static
      * The pager widget
@@ -30,6 +28,11 @@ public class MainVotingPageFragment extends Fragment {
      * provides the pages to the view pager widget.
      */
     private PagerAdapter mPagerAdapter;
+
+    /**
+     * Tag to log.
+     */
+    private String TAG = "MainVotingPageFragment";
 
     public MainVotingPageFragment() {
     }
@@ -51,14 +54,8 @@ public class MainVotingPageFragment extends Fragment {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
-        mPagerAdapter = new ViewPagerAdapter(getFragmentManager(), 5);
+        mPagerAdapter = new ViewPagerAdapter(MainVotingPageFragment.this, getFragmentManager(), 5);
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                Log.v("MainVotingPageFragment", "setOnPageChangeListener");
-            }
-        });
         return rootView;
     }
 
@@ -66,18 +63,16 @@ public class MainVotingPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        try {
-            pagerCurrentItemListener = (PagerCurrentItemListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new RuntimeException("The activity that contains MainVotingPageFragment must implement MainVotingPageFragment.setCurrentPage");
-        }
     }
 
 
-    /**
-     * @param position
-     */
-    public static void setCurrentItem(int position) {
-        mPager.setCurrentItem(position);
+    @Override
+    public void setCurrentPage(int position) {
+
+    }
+
+    @Override
+    public void onVotingAnimationEnd() {
+
     }
 }

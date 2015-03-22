@@ -2,16 +2,13 @@ package co.mobiwise.indircom.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.fragment.MainVotingPageFragment;
 import co.mobiwise.indircom.listener.ConnectivityChangeListener;
-import co.mobiwise.indircom.listener.PagerCurrentItemListener;
 
 
-public class MainActivity extends ActionBarActivity implements ConnectivityChangeListener, PagerCurrentItemListener {
+public class MainActivity extends ActionBarActivity implements ConnectivityChangeListener {
 
     private static final String TAG = "MainActivity";
 
@@ -34,10 +31,5 @@ public class MainActivity extends ActionBarActivity implements ConnectivityChang
     @Override
     public void onConnectionFind() {
 
-    }
-
-    @Override
-    public void setCurrentPage(int position) {
-        MainVotingPageFragment.setCurrentItem(position);
     }
 }

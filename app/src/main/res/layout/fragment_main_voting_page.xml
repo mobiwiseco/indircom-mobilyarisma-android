@@ -5,6 +5,15 @@
     android:background="@drawable/bg_pink"
     tools:context=".MainActivity$PlaceholderFragment">
 
+    <ImageView
+        android:id="@+id/imageview_menu"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/icon_menu"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"/>
+
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"

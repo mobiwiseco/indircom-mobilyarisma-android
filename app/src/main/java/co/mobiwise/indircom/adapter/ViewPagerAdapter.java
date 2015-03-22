@@ -3,8 +3,8 @@ package co.mobiwise.indircom.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
+import co.mobiwise.indircom.fragment.MainVotingPageFragment;
 import co.mobiwise.indircom.fragment.VotingActionFragment;
 
 /**
@@ -15,16 +15,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public static final String TAG = "ViewPagerAdapter";
 
     private int num_pages;
+    private Fragment fragment;
 
-    public ViewPagerAdapter(FragmentManager fm, int num_pages) {
+    public ViewPagerAdapter(Fragment fragment, FragmentManager fm, int num_pages) {
         super(fm);
         this.num_pages = num_pages;
+        this.fragment = fragment;
     }
 
     @Override
     public Fragment getItem(int position) {
-        Log.v(TAG, String.valueOf(position));
-        return VotingActionFragment.newInstance(position);
+        VotingActionFragment voting_action_fragment =  VotingActionFragment.newInstance(position);
+        voting_action_fragment.setVotingActionCallback((MainVotingPageFragment)fragment);
+        return voting_action_fragment;
     }
 
     @Override
