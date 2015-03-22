@@ -18,7 +18,7 @@ import co.mobiwise.indircom.model.App;
 /**
  * Created by mac on 13/03/15.
  */
-public class VoteFragment extends Fragment implements VoteControllerListener{
+public class VoteFragment extends Fragment implements VoteControllerListener {
 
     private static String TAG = "VoteFragment";
 
@@ -50,33 +50,69 @@ public class VoteFragment extends Fragment implements VoteControllerListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        /**
+         * Get All unvoted apps on clicked.
+         */
         /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = UserManager.getInstance(getActivity().getApplicationContext()).getUser();
-                Api.getInstance(getActivity().getApplicationContext()).getApps(user.getToken(),user.getAuth_id());
+                Api.getInstance(getActivity().getApplicationContext()).getApps(user.getToken(), user.getAuth_id());
+            }
+        });*/
+
+        /**
+         * Vote one app on click.
+         */
+        /*button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = UserManager.getInstance(getActivity().getApplicationContext()).getUser();
+                Api.getInstance(getActivity().getApplicationContext()).voteApp(user.getAuth_id(),1,1);
             }
         });*/
     }
 
+    /**
+     * Notified when app vote completely sent.
+     */
     @Override
-    public void onVoteCompleted() {
+    public void onVoteCompleted(int app_id) {
+        //TODO update list adapter by removing app by given app_id.
     }
 
+    /**
+     * Notified when error occured while sending vote
+     * @param error_code
+     */
     @Override
     public void onErrorOccured(String error_code) {
+        //TODO
     }
 
+    /**
+     * Notified when vote start sending.
+     */
     @Override
     public void onVoteStartSending() {
+        //TODO
     }
 
+    /**
+     * Notified when unvoted apps start fetching
+     */
     @Override
     public void onAppsStartFetching() {
+        //TODO
     }
 
+    /**
+     * Notified when all unvoted app list fetched.
+     * @param apps
+     */
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
+        //TODO notify list adapter with list.
     }
 
     @Override

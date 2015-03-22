@@ -11,8 +11,9 @@ public interface VoteControllerListener {
 
     /**
      * Called when vote process succeed.
+     * @param app_id
      */
-    public void onVoteCompleted();
+    public void onVoteCompleted(int app_id);
 
     /**
      * Called when error occured on vote process.

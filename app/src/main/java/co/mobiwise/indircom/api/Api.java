@@ -1,7 +1,6 @@
 package co.mobiwise.indircom.api;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -102,7 +101,6 @@ public class Api{
             public void onResponse(String response) {
 
                 try {
-                    Log.v(TAG,response.toString());
                     JSONObject response_json = new JSONObject(response.toString()).getJSONArray(ApiConstants.JSON_NAME_USER).getJSONObject(0);
                     User user = new User();
                     user.setAuth_id(response_json.getString(ApiConstants.USER_AUTH_ID));
@@ -163,10 +161,6 @@ public class Api{
         StringRequest unvoted_apps_request = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-                Log.v(TAG,get_apps_url);
-                Log.v(TAG, user_auth_id);
-                Log.v(TAG,response.toString());
 
                 try {
                     ArrayList<App> app_list = new ArrayList<>();
@@ -235,22 +229,45 @@ public class Api{
      * Request user vote about related apps
      * @param app_id
      */
-    public void voteApp(final int user_auth_id, int app_id, final int vote){
+    public void voteApp(final String user_auth_id, final int app_id, final int vote){
+
+        /**
+         * Notify vote controller listener vote start.
+         */
+        if(vote_controller_listener!=null)
+            vote_controller_listener.onVoteStartSending();
 
         String vote_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_RATE + "/" + String.valueOf(app_id);
+                "/" + user_auth_id + ApiConstants.METHOD_RATE + "/" + String.valueOf(app_id);
 
         StringRequest vote_request = new StringRequest(Request.Method.POST, vote_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                //TODO Handle Response.
+                try {
+                    JSONObject json_response = new JSONObject(response);
+
+                    /**
+                     * If response 200 then OK.
+                     */
+                    if(json_response.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+
+                        /**
+                         * Notify listener when app vote completed.
+                         */
+                        if(vote_controller_listener != null)
+                            vote_controller_listener.onVoteCompleted(app_id);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //TODO Handle Error.
+                //TODO Handle Error. Jokin' who cares.
             }
         }){
             @Override
@@ -269,18 +286,32 @@ public class Api{
 
     }
 
+    /**
+     * Register registration listener to notify registration process information.
+     * @param registration_listener
+     */
     public void registerRegistrationListener(RegistrationListener registration_listener){
         this.registration_listener = registration_listener;
     }
 
+    /**
+     * Unregister register no needed use.
+     */
     public void unregisterRegistrationListener(){
         this.registration_listener = null;
     }
 
+    /**
+     * Register @VoteControllerListener to notify voting process informations.
+     * @param vote_controller_listener
+     */
     public void registerVoteControllerListener(VoteControllerListener vote_controller_listener){
         this.vote_controller_listener = vote_controller_listener;
     }
 
+    /**
+     * Unregister receiver no needed use.
+     */
     public void unregisterVoteControllerListener(){
         this.vote_controller_listener = null;
     }
