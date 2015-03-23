@@ -23,7 +23,7 @@ import co.mobiwise.indircom.model.User;
 /**
  * Created by mac on 13/03/15.
  */
-public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener{
+public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener, ViewPager.OnPageChangeListener {
 
     /**
      * To achieve mPager from MainActivity, define as static
@@ -72,6 +72,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
         mPagerAdapter = new ViewPagerAdapter(MainVotingPageFragment.this, getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+        mPager.setOnPageChangeListener(this);
 
         User user = UserManager.getInstance(getActivity().getApplicationContext()).getUser();
 
@@ -93,8 +94,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onVotingAnimationEnd() {
-        Log.v(TAG,"onVotingAnimationEnd");
-        mPager.setCurrentItem(mPager.getCurrentItem()+1);
+        int tempIndex = mPager.getCurrentItem();
+        mPagerAdapter.removeApp(tempIndex);
     }
 
     @Override
@@ -104,8 +105,25 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
-        Log.v(TAG,"onAppsFetchCompleted : Size : " + apps.size());
         mPagerAdapter.setAppList(apps);
         //TODO dismiss dialog.
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        Log.v(TAG,"Position : " + position + "\n" +
+                    "Offset : " + positionOffset + "\n" +
+                    "Pixel : " + positionOffsetPixels);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

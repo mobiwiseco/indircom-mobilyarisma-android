@@ -26,7 +26,7 @@ public class VoteService extends Service implements VoteListener{
     /**
      * Tag for log
      */
-    private static String TAG = "VoteService";
+    private static String TAG = "VoteService.class";
 
 
     @Override

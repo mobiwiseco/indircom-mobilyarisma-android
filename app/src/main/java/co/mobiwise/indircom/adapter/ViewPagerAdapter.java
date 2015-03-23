@@ -32,6 +32,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    public void removeApp(int index){
+        appList.remove(index);
+        notifyDataSetChanged();
+    }
+
     @Override
     public Fragment getItem(int position) {
         VotingActionFragment votingActionFragment =  VotingActionFragment.newInstance(appList.get(position));
@@ -42,6 +47,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return appList.size();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
 }
