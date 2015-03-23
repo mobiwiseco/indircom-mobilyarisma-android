@@ -1,9 +1,11 @@
 package co.mobiwise.indircom.model;
 
+import java.io.Serializable;
+
 /**
  * Created by mertsimsek on 20/03/15.
  */
-public class App{
+public class App implements Serializable{
 
     private int app_id;
     private String app_name;
@@ -63,11 +65,11 @@ public class App{
         this.app_download_url = app_download_url;
     }
 
-    public int getUser_vote() {
+    public int getUserVote() {
         return user_vote;
     }
 
-    public void setUser_vote(int user_vote) {
+    public void setUserVote(int user_vote) {
         this.user_vote = user_vote;
     }
 

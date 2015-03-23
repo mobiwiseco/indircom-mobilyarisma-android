@@ -4,8 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+
 import co.mobiwise.indircom.fragment.MainVotingPageFragment;
 import co.mobiwise.indircom.fragment.VotingActionFragment;
+import co.mobiwise.indircom.model.App;
 
 /**
  * Created by mac on 21/03/15.
@@ -14,25 +17,31 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public static final String TAG = "ViewPagerAdapter";
 
-    private int num_pages;
-    private Fragment fragment;
+    Fragment fragment;
 
-    public ViewPagerAdapter(Fragment fragment, FragmentManager fm, int num_pages) {
+    ArrayList<App> appList;
+
+    public ViewPagerAdapter(Fragment fragment, FragmentManager fm) {
         super(fm);
-        this.num_pages = num_pages;
         this.fragment = fragment;
+        appList = new ArrayList<>();
+    }
+
+    public void setAppList(ArrayList<App> app_list){
+        this.appList = app_list;
+        notifyDataSetChanged();
     }
 
     @Override
     public Fragment getItem(int position) {
-        VotingActionFragment voting_action_fragment =  VotingActionFragment.newInstance(position);
-        voting_action_fragment.setVotingActionCallback((MainVotingPageFragment)fragment);
-        return voting_action_fragment;
+        VotingActionFragment votingActionFragment =  VotingActionFragment.newInstance(appList.get(position));
+        votingActionFragment.setVotingActionCallback((MainVotingPageFragment) fragment);
+        return votingActionFragment;
     }
 
     @Override
     public int getCount() {
-        return num_pages;
+        return appList.size();
     }
 
 }

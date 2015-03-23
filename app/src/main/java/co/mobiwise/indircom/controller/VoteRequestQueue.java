@@ -3,6 +3,7 @@ package co.mobiwise.indircom.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.service.VoteService;
@@ -22,6 +23,8 @@ public class VoteRequestQueue implements SharedPreferences.OnSharedPreferenceCha
      * Context to use preferences and service call.
      */
     private Context context;
+
+    private String TAG = "VoteRequestQueue";
 
     private VoteRequestQueue(Context context) {
         this.context = context;
@@ -44,6 +47,7 @@ public class VoteRequestQueue implements SharedPreferences.OnSharedPreferenceCha
      * @param app
      */
     public void addVote(App app){
+        Log.v(TAG,"addVote");
         ApplicationPreferences.getInstance(context).addToRequestQueue(app);
     }
 
@@ -55,6 +59,7 @@ public class VoteRequestQueue implements SharedPreferences.OnSharedPreferenceCha
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.v(TAG,"onSharedPreferenceChanged");
         context.startService(new Intent(context.getApplicationContext(), VoteService.class));
     }
 }

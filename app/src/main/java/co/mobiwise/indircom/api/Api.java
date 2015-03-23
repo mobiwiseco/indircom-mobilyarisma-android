@@ -1,6 +1,7 @@
 package co.mobiwise.indircom.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,22 +39,22 @@ public class Api{
     /**
      * Volley request to put requests.
      */
-    private RequestQueue request_queue;
+    private RequestQueue requestQueue;
 
     /**
      * RegistrationListener methods will be notified when user registration process.
      */
-    private RegistrationListener registration_listener;
+    private RegistrationListener registrationListener;
 
     /**
      * Vote listener to notify when vote completed.
      */
-    private VoteListener vote_listener;
+    private VoteListener voteListener;
 
     /**
      * VoteControllerListener methods will be notified while user vote process
      */
-    private AppFetchControllerListener app_fetching_controller_listener;
+    private AppFetchControllerListener appFetchingControllerListener;
 
     /**
      * Api instance. Seriously.
@@ -71,7 +72,7 @@ public class Api{
      */
     private Api(Context context) {
         this.context = context;
-        this.request_queue = Volley.newRequestQueue(context);
+        this.requestQueue = Volley.newRequestQueue(context);
     }
 
     /**
@@ -94,28 +95,28 @@ public class Api{
     public void registerUser(final User user){
 
         //Notify listener registration started
-        if(registration_listener!=null)
-            registration_listener.onUserRegistrationStarted();
+        if(registrationListener !=null)
+            registrationListener.onUserRegistrationStarted();
 
         //create webservice url
-        String register_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION + ApiConstants.METHOD_REGISTER;
+        String registerUrl = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION + ApiConstants.METHOD_REGISTER;
 
         //initialize post request object for registration
-        StringRequest register_request = new StringRequest(Request.Method.POST, register_url, new Response.Listener<String>() {
+        StringRequest registerRequest = new StringRequest(Request.Method.POST, registerUrl, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
 
                 try {
-                    JSONObject response_json = new JSONObject(response.toString()).getJSONArray(ApiConstants.JSON_NAME_USER).getJSONObject(0);
+                    JSONObject responseJson = new JSONObject(response.toString()).getJSONArray(ApiConstants.JSON_NAME_USER).getJSONObject(0);
                     User user = new User();
-                    user.setAuth_id(response_json.getString(ApiConstants.USER_AUTH_ID));
-                    user.setName(response_json.getString(ApiConstants.NAME));
-                    user.setSurname(response_json.getString(ApiConstants.SURNAME));
-                    user.setToken(response_json.getString(ApiConstants.TOKEN));
+                    user.setAuth_id(responseJson.getString(ApiConstants.USER_AUTH_ID));
+                    user.setName(responseJson.getString(ApiConstants.NAME));
+                    user.setSurname(responseJson.getString(ApiConstants.SURNAME));
+                    user.setToken(responseJson.getString(ApiConstants.TOKEN));
 
-                    if(registration_listener!=null)
-                        registration_listener.onUserRegistered(user);
+                    if(registrationListener !=null)
+                        registrationListener.onUserRegistered(user);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -145,7 +146,7 @@ public class Api{
         };
 
         //adds request to request queue
-        request_queue.add(register_request);
+        requestQueue.add(registerRequest);
 
     }
 
@@ -158,51 +159,51 @@ public class Api{
         /**
          * Notify listener with information that unvoted apps started fetching.
          */
-        if(app_fetching_controller_listener !=null){
-                app_fetching_controller_listener.onAppsStartFetching();
+        if(appFetchingControllerListener !=null){
+                appFetchingControllerListener.onAppsStartFetching();
         }
 
         final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
                                 "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
 
-        StringRequest unvoted_apps_request = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
+        StringRequest unvotedAppsRequest = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
-                    ArrayList<App> app_list = new ArrayList<>();
-                    JSONObject apps_json_all = new JSONObject(response);
+                    ArrayList<App> appList = new ArrayList<>();
+                    JSONObject appsJsonAll = new JSONObject(response);
 
                     /**
                      * If response 200 then OK.
                      */
-                    if(apps_json_all.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+                    if(appsJsonAll.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
 
-                        JSONArray app_json_array = apps_json_all.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
+                        JSONArray appJsonArray = appsJsonAll.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
 
                         /**
                          * Loop for all unvoted apps on json array.
                          */
-                        for(int i = 0 ; i < app_json_array.length() ; i++){
+                        for(int i = 0 ; i < appJsonArray.length() ; i++){
 
-                            JSONObject app_json_object = app_json_array.getJSONObject(i);
+                            JSONObject appJsonObject = appJsonArray.getJSONObject(i);
 
                             App app = new App();
-                            app.setApp_id(Integer.parseInt(app_json_object.getString(ApiConstants.APP_ID)));
-                            app.setApp_name(app_json_object.getString(ApiConstants.APP_NAME));
-                            app.setApp_description(app_json_object.getString(ApiConstants.APP_DESCRIPTION));
-                            app.setApp_download_url(app_json_object.getString(ApiConstants.APP_DOWNLOAD_URL));
-                            app.setApp_image_url(app_json_object.getString(ApiConstants.APP_IMAGE_URL));
+                            app.setApp_id(Integer.parseInt(appJsonObject.getString(ApiConstants.APP_ID)));
+                            app.setApp_name(appJsonObject.getString(ApiConstants.APP_NAME));
+                            app.setApp_description(appJsonObject.getString(ApiConstants.APP_DESCRIPTION));
+                            app.setApp_download_url(appJsonObject.getString(ApiConstants.APP_DOWNLOAD_URL));
+                            app.setApp_image_url(appJsonObject.getString(ApiConstants.APP_IMAGE_URL));
 
-                            app_list.add(app);
+                            appList.add(app);
                         }
 
 
                         /**
                          * Notify listener when apps fetched completed.
                          */
-                        if(app_fetching_controller_listener !=null){
-                                app_fetching_controller_listener.onAppsFetchCompleted(app_list);
+                        if(appFetchingControllerListener !=null){
+                                appFetchingControllerListener.onAppsFetchCompleted(appList);
                         }
 
                     }
@@ -230,7 +231,7 @@ public class Api{
             }
         };
 
-        request_queue.add(unvoted_apps_request);
+        requestQueue.add(unvotedAppsRequest);
     }
 
     /**
@@ -239,26 +240,30 @@ public class Api{
      */
     public void voteApp(final App app){
 
-        String vote_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getUser_vote());
+        Log.v(TAG, app.toString());
 
-        StringRequest vote_request = new StringRequest(Request.Method.POST, vote_url, new Response.Listener<String>() {
+        String voteUrl = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
+                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getUserVote());
+
+        StringRequest voteRequest = new StringRequest(Request.Method.POST, voteUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
-                    JSONObject json_response = new JSONObject(response);
+                    JSONObject jsonResponse = new JSONObject(response);
+
+                    Log.v(TAG,response);
 
                     /**
                      * If response 200 then OK.
                      */
-                    if(json_response.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+                    if(jsonResponse.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
 
                         /**
                          * Notify listener when app vote completed.
                          */
-                        if(app_fetching_controller_listener !=null){
-                                vote_listener.onVoteCompleted(app);
+                        if(appFetchingControllerListener !=null){
+                                voteListener.onVoteCompleted(app);
                         }
                     }
 
@@ -270,7 +275,13 @@ public class Api{
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //TODO Handle Error. Jokin' who cares.
+                /**
+                 * Notify listener when app got error.
+                 */
+                if(appFetchingControllerListener !=null){
+                    voteListener.onErrorOccured();
+                }
+
             }
         }){
             @Override
@@ -278,52 +289,52 @@ public class Api{
                 //Put required params to maps
                 Map<String, String> maps = new HashMap<String, String>();
                 maps.put(ApiConstants.TOKEN, UserManager.getInstance(context).getUser().getToken());
-                maps.put(ApiConstants.RATE, String.valueOf(app.getUser_vote()));
+                maps.put(ApiConstants.RATE, String.valueOf(app.getUserVote()));
 
                 //return maps. Seriously.
                 return maps;
             }
         };
 
-        request_queue.add(vote_request);
+        requestQueue.add(voteRequest);
 
     }
 
     /**
      * Register registration listener to notify registration process information.
-     * @param registration_listener
+     * @param registrationListener
      */
-    public void registerRegistrationListener(RegistrationListener registration_listener){
-        this.registration_listener = registration_listener;
+    public void registerRegistrationListener(RegistrationListener registrationListener){
+        this.registrationListener = registrationListener;
     }
 
     /**
      * Unregister register no needed use.
      */
     public void unregisterRegistrationListener(){
-        this.registration_listener = null;
+        this.registrationListener = null;
     }
 
     /**
      * Register @VoteControllerListener to notify voting process informations.
-     * @param vote_controller_listener
+     * @param appFetchingControllerListener
      */
-    public void registerAppsFetchListener(AppFetchControllerListener vote_controller_listener){
-        this.app_fetching_controller_listener = vote_controller_listener;
+    public void registerAppsFetchListener(AppFetchControllerListener appFetchingControllerListener){
+        this.appFetchingControllerListener = appFetchingControllerListener;
     }
 
     /**
      * Unregister receiver no needed use.
      */
-    public void unregisterAppsFetchListener(AppFetchControllerListener vote_controller_listener){
-        this.app_fetching_controller_listener = null;
+    public void unregisterAppsFetchListener(){
+        this.appFetchingControllerListener = null;
     }
 
-    public void registerVoteControllerListener(VoteListener vote_listener){
-        this.vote_listener = vote_listener;
+    public void registerVoteControllerListener(VoteListener voteListener){
+        this.voteListener = voteListener;
     }
 
     public void unregisterVoteControllerListener(){
-        this.vote_listener = null;
+        this.voteListener = null;
     }
 }
