@@ -243,7 +243,9 @@ public class Api{
         Log.v(TAG, app.toString());
 
         String voteUrl = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getUserVote());
+                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getApp_id());
+
+        Log.v(TAG, "URL : " + voteUrl);
 
         StringRequest voteRequest = new StringRequest(Request.Method.POST, voteUrl, new Response.Listener<String>() {
             @Override
@@ -262,7 +264,7 @@ public class Api{
                         /**
                          * Notify listener when app vote completed.
                          */
-                        if(appFetchingControllerListener !=null){
+                        if(voteListener !=null){
                                 voteListener.onVoteCompleted(app);
                         }
                     }
@@ -278,7 +280,7 @@ public class Api{
                 /**
                  * Notify listener when app got error.
                  */
-                if(appFetchingControllerListener !=null){
+                if(voteListener !=null){
                     voteListener.onErrorOccured();
                 }
 
@@ -290,6 +292,9 @@ public class Api{
                 Map<String, String> maps = new HashMap<String, String>();
                 maps.put(ApiConstants.TOKEN, UserManager.getInstance(context).getUser().getToken());
                 maps.put(ApiConstants.RATE, String.valueOf(app.getUserVote()));
+
+                Log.v(TAG,"Token :  "+UserManager.getInstance(context).getUser().getToken());
+                Log.v(TAG,"Vote : " + String.valueOf(app.getUserVote()));
 
                 //return maps. Seriously.
                 return maps;

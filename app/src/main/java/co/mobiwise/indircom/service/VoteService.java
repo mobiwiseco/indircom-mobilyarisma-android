@@ -3,7 +3,6 @@ package co.mobiwise.indircom.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -38,8 +37,6 @@ public class VoteService extends Service implements VoteListener{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.v(TAG,"onStartCommand");
-
         /**
          * Register this service to api to listen vote processes.
          */
@@ -50,12 +47,10 @@ public class VoteService extends Service implements VoteListener{
          */
         ArrayList<App> votedAppList = ApplicationPreferences.getInstance(getApplicationContext()).getVoteRequestQueue();
 
-        Log.v(TAG, "onStartCommand : Size : " + votedAppList.size());
-
         /**
          * convert arraylist to stack to pop sequently.
          */
-        appQueue = Utils.convertToStack(votedAppList);
+        appQueue = Utils.convertToQueue(votedAppList);
 
         /**
          * send data on background
@@ -70,9 +65,8 @@ public class VoteService extends Service implements VoteListener{
      */
     private void sendDataOnBackground(){
 
-        Log.v(TAG,"sendDataOnBackground");
-
         Api api = Api.getInstance(getApplicationContext());
+
         App peekedApp = appQueue.peek();
 
         if(peekedApp!=null)
@@ -89,12 +83,14 @@ public class VoteService extends Service implements VoteListener{
     @Override
     public void onVoteCompleted(App app) {
 
-        Log.v(TAG,"onVoteCompleted : Appname : " + app.getApp_name());
-
         /**
          * Remove sent app and update preferences by updated queue
          */
         appQueue.remove(app);
+
+        /**
+         * Save updated list to shared preferences.
+         */
         ApplicationPreferences.getInstance(getApplicationContext()).saveVoteRequestQueue(Utils.convertToArraylist(appQueue));
 
         /**
@@ -102,7 +98,9 @@ public class VoteService extends Service implements VoteListener{
          */
         if(!appQueue.isEmpty())
             sendDataOnBackground();
-        else stopSelf();
+        else
+            stopSelf();
+
     }
 
     /**
@@ -110,9 +108,6 @@ public class VoteService extends Service implements VoteListener{
      */
     @Override
     public void onErrorOccured() {
-
-        Log.v(TAG,"onErrorOccured");
-
         /**
          * If still we hae internet connection try again to send. Otherwise stop service.
          */
@@ -122,5 +117,6 @@ public class VoteService extends Service implements VoteListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Api.getInstance(getApplicationContext()).unregisterVoteControllerListener();
     }
 }

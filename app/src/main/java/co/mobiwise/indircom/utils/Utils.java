@@ -33,18 +33,22 @@ public class Utils {
         return o;
     }
 
-    public static Queue<App> convertToStack(ArrayList<App> app_list){
+    public static Queue<App> convertToQueue(ArrayList<App> app_list){
         Queue<App> app_stack = new LinkedList<>();
-        for(App app : app_list)
+        for(App app : app_list){
             app_stack.add(app);
+        }
         return app_stack;
     }
 
-    public static ArrayList<App> convertToArraylist(Queue<App> app_list){
-        ArrayList<App> app_arraylist = new ArrayList<>();
-        for(int i = 0 ; i < app_list.size() ; i++)
-            app_arraylist.add(app_list.remove());
-        return app_arraylist;
+    public static ArrayList<App> convertToArraylist(Queue<App> appList){
+        ArrayList<App> appArraylist = new ArrayList<>();
+        Queue<App> cloneQueue = new LinkedList<>(appList);
+        int size = cloneQueue.size();
+        for(int i = 0 ; i < size ; i++)
+            appArraylist.add(cloneQueue.remove());
+
+        return appArraylist;
     }
 
 
