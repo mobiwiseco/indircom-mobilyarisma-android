@@ -19,8 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.mobiwise.indircom.controller.UserManager;
+import co.mobiwise.indircom.listener.AppFetchControllerListener;
 import co.mobiwise.indircom.listener.RegistrationListener;
-import co.mobiwise.indircom.listener.VoteControllerListener;
+import co.mobiwise.indircom.listener.VoteListener;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
 
@@ -45,9 +46,14 @@ public class Api{
     private RegistrationListener registration_listener;
 
     /**
+     * Vote listener to notify when vote completed.
+     */
+    private VoteListener vote_listener;
+
+    /**
      * VoteControllerListener methods will be notified while user vote process
      */
-    private ArrayList<VoteControllerListener> vote_controller_listener_list;
+    private AppFetchControllerListener app_fetching_controller_listener;
 
     /**
      * Api instance. Seriously.
@@ -152,9 +158,8 @@ public class Api{
         /**
          * Notify listener with information that unvoted apps started fetching.
          */
-        if(vote_controller_listener_list !=null){
-            for(VoteControllerListener listener : vote_controller_listener_list)
-                listener.onAppsStartFetching();
+        if(app_fetching_controller_listener !=null){
+                app_fetching_controller_listener.onAppsStartFetching();
         }
 
         final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
@@ -196,9 +201,8 @@ public class Api{
                         /**
                          * Notify listener when apps fetched completed.
                          */
-                        if(vote_controller_listener_list !=null){
-                            for(VoteControllerListener listener : vote_controller_listener_list)
-                                listener.onAppsFetchCompleted(app_list);
+                        if(app_fetching_controller_listener !=null){
+                                app_fetching_controller_listener.onAppsFetchCompleted(app_list);
                         }
 
                     }
@@ -231,20 +235,12 @@ public class Api{
 
     /**
      * Request user vote about related apps
-     * @param app_id
+     * @param app
      */
-    public void voteApp(final String user_auth_id, final int app_id, final int vote){
-
-        /**
-         * Notify vote controller listener vote start.
-         */
-        if(vote_controller_listener_list !=null){
-            for(VoteControllerListener listener : vote_controller_listener_list)
-                listener.onVoteStartSending();
-        }
+    public void voteApp(final App app){
 
         String vote_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                "/" + user_auth_id + ApiConstants.METHOD_RATE + "/" + String.valueOf(app_id);
+                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getUser_vote());
 
         StringRequest vote_request = new StringRequest(Request.Method.POST, vote_url, new Response.Listener<String>() {
             @Override
@@ -261,9 +257,8 @@ public class Api{
                         /**
                          * Notify listener when app vote completed.
                          */
-                        if(vote_controller_listener_list !=null){
-                            for(VoteControllerListener listener : vote_controller_listener_list)
-                                listener.onVoteCompleted(app_id);
+                        if(app_fetching_controller_listener !=null){
+                                vote_listener.onVoteCompleted(app);
                         }
                     }
 
@@ -283,7 +278,7 @@ public class Api{
                 //Put required params to maps
                 Map<String, String> maps = new HashMap<String, String>();
                 maps.put(ApiConstants.TOKEN, UserManager.getInstance(context).getUser().getToken());
-                maps.put(ApiConstants.RATE, String.valueOf(vote));
+                maps.put(ApiConstants.RATE, String.valueOf(app.getUser_vote()));
 
                 //return maps. Seriously.
                 return maps;
@@ -313,14 +308,22 @@ public class Api{
      * Register @VoteControllerListener to notify voting process informations.
      * @param vote_controller_listener
      */
-    public void registerVoteControllerListener(VoteControllerListener vote_controller_listener){
-        this.vote_controller_listener_list.add(vote_controller_listener);
+    public void registerAppsFetchListener(AppFetchControllerListener vote_controller_listener){
+        this.app_fetching_controller_listener = vote_controller_listener;
     }
 
     /**
      * Unregister receiver no needed use.
      */
-    public void unregisterVoteControllerListener(VoteControllerListener vote_controller_listener){
-        this.vote_controller_listener_list.remove(vote_controller_listener);
+    public void unregisterAppsFetchListener(AppFetchControllerListener vote_controller_listener){
+        this.app_fetching_controller_listener = null;
+    }
+
+    public void registerVoteControllerListener(VoteListener vote_listener){
+        this.vote_listener = vote_listener;
+    }
+
+    public void unregisterVoteControllerListener(){
+        this.vote_listener = null;
     }
 }

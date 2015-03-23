@@ -3,13 +3,14 @@ package co.mobiwise.indircom.model;
 /**
  * Created by mertsimsek on 20/03/15.
  */
-public class App {
+public class App{
 
     private int app_id;
     private String app_name;
     private String app_description;
     private String app_image_url;
     private String app_download_url;
+    private int user_vote;
 
     public App() {
     }
@@ -60,6 +61,14 @@ public class App {
 
     public void setApp_download_url(String app_download_url) {
         this.app_download_url = app_download_url;
+    }
+
+    public int getUser_vote() {
+        return user_vote;
+    }
+
+    public void setUser_vote(int user_vote) {
+        this.user_vote = user_vote;
     }
 
     @Override

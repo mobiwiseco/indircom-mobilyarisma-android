@@ -118,12 +118,10 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
                 voting_action_fragment_callback.setCurrentPage(mPageNumber + 1);
                 break;
             case R.id.image_like:
-                //TODO send request to request queue
                 imageview_like.setBackgroundResource(R.drawable.icon_like_selected);
                 animateVoteImagesOnVote(imageview_like);
                 break;
             case R.id.image_dislike:
-                //TODO send request to request queue
                 imageview_dislike.setBackgroundResource(R.drawable.icon_dislike_selected);
                 animateVoteImagesOnVote(imageview_dislike);
                 break;
