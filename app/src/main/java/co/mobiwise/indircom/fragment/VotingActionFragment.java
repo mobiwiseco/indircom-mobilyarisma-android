@@ -73,11 +73,11 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          * Puts app values to bundle
          */
         Bundle args = new Bundle();
-        args.putInt(ARG_APP_ID, app.getApp_id());
-        args.putString(ARG_APP_NAME, app.getApp_name());
-        args.putString(ARG_APP_DESCRIPTION, app.getApp_description());
-        args.putString(ARG_APP_DOWNLOAD_URL, app.getApp_download_url());
-        args.putString(ARG_APP_IMAGE_URL, app.getApp_image_url());
+        args.putInt(ARG_APP_ID, app.getAppId());
+        args.putString(ARG_APP_NAME, app.getAppName());
+        args.putString(ARG_APP_DESCRIPTION, app.getAppDescription());
+        args.putString(ARG_APP_DOWNLOAD_URL, app.getAppDownloadUrl());
+        args.putString(ARG_APP_IMAGE_URL, app.getAppImageUrl());
         votingActionFragment.setArguments(args);
 
         return votingActionFragment;

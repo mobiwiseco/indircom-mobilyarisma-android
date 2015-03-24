@@ -190,11 +190,11 @@ public class Api{
                                 JSONObject appJsonObject = appJsonArray.getJSONObject(i);
 
                                 App app = new App();
-                                app.setApp_id(Integer.parseInt(appJsonObject.getString(ApiConstants.APP_ID)));
-                                app.setApp_name(appJsonObject.getString(ApiConstants.APP_NAME));
-                                app.setApp_description(appJsonObject.getString(ApiConstants.APP_DESCRIPTION));
-                                app.setApp_download_url(appJsonObject.getString(ApiConstants.APP_DOWNLOAD_URL));
-                                app.setApp_image_url(appJsonObject.getString(ApiConstants.APP_IMAGE_URL));
+                                app.setAppId(Integer.parseInt(appJsonObject.getString(ApiConstants.APP_ID)));
+                                app.setAppName(appJsonObject.getString(ApiConstants.APP_NAME));
+                                app.setAppDescription(appJsonObject.getString(ApiConstants.APP_DESCRIPTION));
+                                app.setAppDownloadUrl(appJsonObject.getString(ApiConstants.APP_DOWNLOAD_URL));
+                                app.setAppImageUrl(appJsonObject.getString(ApiConstants.APP_IMAGE_URL));
 
                                 appList.add(app);
                             }
@@ -245,7 +245,7 @@ public class Api{
         Log.v(TAG, app.toString());
 
         String voteUrl = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getApp_id());
+                "/" + UserManager.getInstance(context).getUser().getAuth_id() + ApiConstants.METHOD_RATE + "/" + String.valueOf(app.getAppId());
 
         Log.v(TAG, "URL : " + voteUrl);
 
