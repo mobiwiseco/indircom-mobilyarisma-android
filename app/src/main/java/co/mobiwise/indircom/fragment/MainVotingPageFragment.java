@@ -1,10 +1,10 @@
 package co.mobiwise.indircom.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,7 @@ import co.mobiwise.indircom.model.User;
 /**
  * Created by mac on 13/03/15.
  */
-public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener, ViewPager.OnPageChangeListener {
+public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener{
 
     /**
      * To achieve mPager from MainActivity, define as static
@@ -35,6 +35,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
      * provides the pages to the view pager widget.
      */
     private ViewPagerAdapter mPagerAdapter;
+
+    private int lastPosition;
 
     /**
      * Tag to log.
@@ -70,12 +72,16 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        /**
+         * create pager adapter and tie to viewpager.
+         */
         mPagerAdapter = new ViewPagerAdapter(MainVotingPageFragment.this, getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(this);
 
+        /**
+         * Fetch non-voted apps by user.
+         */
         User user = UserManager.getInstance(getActivity().getApplicationContext()).getUser();
-
         Api api = Api.getInstance(getActivity().getApplicationContext());
         api.registerAppsFetchListener(MainVotingPageFragment.this);
         api.getApps(user.getToken(), user.getAuth_id());
@@ -94,8 +100,33 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onVotingAnimationEnd() {
-        int tempIndex = mPager.getCurrentItem();
-        mPagerAdapter.removeApp(tempIndex);
+        /**
+         * Hold current index to control head and tail of pager.
+         */
+        final int tempIndex = mPager.getCurrentItem();
+
+        if(mPagerAdapter.getCount()>1){
+            if(tempIndex == (mPagerAdapter.getCount()-1))
+                mPager.setCurrentItem(tempIndex - 1);
+            else
+                mPager.setCurrentItem(tempIndex + 1);
+        }
+
+
+        /**
+         * Removing Item from pager adapter blocks changing current item
+         * animation. This code block delays removing process enough time
+         * to show change animation.Trick.
+         */
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPagerAdapter.removeApp(tempIndex);
+                if(mPagerAdapter.getCount() > 1)
+                    mPager.setCurrentItem(tempIndex,false);
+            }
+        }, 350);
     }
 
     @Override
@@ -106,24 +137,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
         mPagerAdapter.setAppList(apps);
+        lastPosition = mPager.getCurrentItem();
         //TODO dismiss dialog.
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        Log.v(TAG,"Position : " + position + "\n" +
-                    "Offset : " + positionOffset + "\n" +
-                    "Pixel : " + positionOffsetPixels);
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
     }
 }
