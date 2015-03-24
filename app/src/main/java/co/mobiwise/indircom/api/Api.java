@@ -179,25 +179,27 @@ public class Api{
                      */
                     if(appsJsonAll.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
 
-                        JSONArray appJsonArray = appsJsonAll.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
+                        if(appsJsonAll.getString(ApiConstants.STATUS).equals(ApiConstants.STATUS_APPS)){
+                            JSONArray appJsonArray = appsJsonAll.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
 
-                        /**
-                         * Loop for all unvoted apps on json array.
-                         */
-                        for(int i = 0 ; i < appJsonArray.length() ; i++){
+                            /**
+                             * Loop for all unvoted apps on json array.
+                             */
+                            for(int i = 0 ; i < appJsonArray.length() ; i++){
 
-                            JSONObject appJsonObject = appJsonArray.getJSONObject(i);
+                                JSONObject appJsonObject = appJsonArray.getJSONObject(i);
 
-                            App app = new App();
-                            app.setApp_id(Integer.parseInt(appJsonObject.getString(ApiConstants.APP_ID)));
-                            app.setApp_name(appJsonObject.getString(ApiConstants.APP_NAME));
-                            app.setApp_description(appJsonObject.getString(ApiConstants.APP_DESCRIPTION));
-                            app.setApp_download_url(appJsonObject.getString(ApiConstants.APP_DOWNLOAD_URL));
-                            app.setApp_image_url(appJsonObject.getString(ApiConstants.APP_IMAGE_URL));
+                                App app = new App();
+                                app.setApp_id(Integer.parseInt(appJsonObject.getString(ApiConstants.APP_ID)));
+                                app.setApp_name(appJsonObject.getString(ApiConstants.APP_NAME));
+                                app.setApp_description(appJsonObject.getString(ApiConstants.APP_DESCRIPTION));
+                                app.setApp_download_url(appJsonObject.getString(ApiConstants.APP_DOWNLOAD_URL));
+                                app.setApp_image_url(appJsonObject.getString(ApiConstants.APP_IMAGE_URL));
 
-                            appList.add(app);
+                                appList.add(app);
+                            }
+
                         }
-
 
                         /**
                          * Notify listener when apps fetched completed.

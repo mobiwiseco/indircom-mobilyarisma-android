@@ -17,5 +17,10 @@
     <string name="app_description_placeholder">indircom_app_description</string>
     <string name="app_download_message">İNDİR</string>
 
+    <!-- Empty page texts when all apps voted -->
+    <string name="congrats_header">TEBRİKLER!</string>
+    <string name="congrats_content">Tüm uygulamaları oyladınız. Uygulamalara destek olduğunuz için teşekkür ederiz. Dilerseniz uygulamamızı kaldırabilirsiniz.</string>
+
+
 
 </resources>

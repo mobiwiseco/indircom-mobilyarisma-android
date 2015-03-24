@@ -44,7 +44,12 @@ public class ApiConstants {
     public static String OK = "200";
     public static String NOT_FOUND = "404";
 
-
+    /**
+     * Return status
+     */
+    public static String STATUS_NO_APPS = "2";
+    public static String STATUS_APPS = "1";
+    public static String STATUS_ERROR = "0";
     /**
      * Post parameters
      */
