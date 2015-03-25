@@ -6,67 +6,8 @@
     <color name="color_blue_dark">#0b7098</color>
     <color name="color_blue_dark_2">#244b5a</color>
 
-    <color name="color_gray_icon">#BB333333</color>
-    <color name="color_gray_header">#737171</color>
-
-    <color name="gm_primary_color">#27ab93</color>
-    <color name="gm_background">#ffffff</color>
-    <color name="color_main">#25ab93</color>
-    <color name="color_main_50">#ff27dfc6</color>
-    <color name="color_main_70">#b327dfc6</color>
-    <color name="color_black">#000000</color>
-    <color name="color_black_50">#80000000</color>
-    <color name="color_gray">#8a8a8a</color>
-    <color name="color_dark_gray">#505050</color>
-    <color name="color_black_gray">#ff363636</color>
-    <color name="color_gray_header_bg">#e0e0e0</color>
-    <color name="color_white">#ffffff</color>
-    <color name="color_card">#fafafa</color>
-    <color name="color_progress">#263238</color>
-    <color name="color_progress_gray">#a7b0a8</color>
-    <color name="color_line_view">#e5e5e5</color>
-    <color name="session_photo_scrim">#6000</color>
-    <color name="photo_tint">#88101010</color>
-
-    <color name="body_text_1_inverse">#deffffff</color>
-    <color name="body_text_2_inverse">#8affffff</color>
-
-    <color name="booster_green_color">#27ab93</color>
-
-    <!-- Swipe to Refresh -->
-    <color name="orange">#FF9900</color>
-    <color name="green">#009900</color>
-    <color name="blue">#000099</color>
-    <color name="red">#bf360c</color>
-
-    <integer-array name="material_palette">
-        <item>@color/material_palette_1</item>
-        <item>@color/material_palette_2</item>
-        <item>@color/material_palette_3</item>
-        <item>@color/material_palette_4</item>
-        <item>@color/material_palette_5</item>
-        <item>@color/material_palette_6</item>
-        <item>@color/material_palette_7</item>
-        <item>@color/material_palette_8</item>
-        <item>@color/material_palette_9</item>
-        <item>@color/material_palette_10</item>
-    </integer-array>
-
-    <color name="material_palette_1">#607D8B</color>
-    <color name="material_palette_2">#616161</color>
-    <color name="material_palette_3">#FFd54d</color>
-    <color name="material_palette_4">#7E57C2</color>
-    <color name="material_palette_5">#FF5722</color>
-    <color name="material_palette_6">#E91E63</color>
-    <color name="material_palette_7">#259D24</color>
-    <color name="material_palette_8">#8BC34A</color>
-    <color name="material_palette_9">#FD971F</color>
-    <color name="material_palette_10">#00BCD4</color>
-
-
-    <color name="apps_list_system_memory">#ff384248</color>
-    <color name="apps_list_cache_memory">#25ab93</color>
-    <color name="apps_list_free_memory">#ffced7db</color>
+    <color name="color_app_detail_download_button_bg">#00541e</color>
+    <color name="color_app_detail_download_text">#abdbab</color>
 
     <integer-array name="dialog_colors">
         <item>@color/color_dialog_1</item>
@@ -74,49 +15,15 @@
         <item>@color/color_dialog_3</item>
         <item>@color/color_dialog_4</item>
     </integer-array>
+    <color name="color_gray">#8a8a8a</color>
+
 
     <color name="color_dialog_1">@color/color_main</color>
     <color name="color_dialog_2">@color/color_main</color>
     <color name="color_dialog_3">@color/color_main</color>
     <color name="color_dialog_4">@color/color_main</color>
+    <color name="color_main">#25ab93</color>
+    <color name="color_white">#ffffff</color>
 
-    <color name="cabinet_color">#1976D2</color>
-    <color name="cabinet_color_darker">#1565C0</color>
-    <color name="cabinet_accent_color_lighter">#27ab93</color>
-    <color name="cabinet_accent_color">#27ab93</color>
-    <color name="cabinet_accent_color_darker">#27ab93</color>
-    <color name="cabinet_gray">#757575</color>
-    <color name="cabinet_gray_darker">#616161</color>
-
-    <color name="drawer_background">#fff</color>
-    <color name="accent_color">#333</color>
-    <color name="search_view_hint">#BBFFFFFF</color>
-
-    <color name="button_disabled">#ddd</color>
-    <color name="button_disabled_dark">#303030</color>
-    <color name="dark_background">#242424</color>
-
-    <color name="empty_text">#C7C7C7</color>
-    <color name="empty_text_dark">#575757</color>
-
-    <color name="statusbar_color_cab">#212121</color>
-
-    <color name="blocking_call_number">#f44336</color>
-
-
-    <!--Backup Gallery Colors-->
-    <color name="holo_blue_bright">#ff00ddff</color>
-    <color name="menu_bg">#101F2D</color>
-    <color name="light_gray">#AA808080</color>
-    <color name="gray">#ffc7c7c7</color>
-    <color name="tab_bg">#142029</color>
-    <color name="bg_light_blue">#EBF5FF</color>
-    <color name="light_black">#CC000000</color>
-    <color name="light_black_AA">#AA000000</color>
-    <color name="light_black_">#33000000</color>
-    <color name="light_white_">#33FFFFFF</color>
-    <color name="dialog_bg">#f0f0f0</color>
-
-    <drawable name="light_black_">#33000000</drawable>
 
 </resources>
