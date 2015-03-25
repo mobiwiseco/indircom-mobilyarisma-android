@@ -5,7 +5,8 @@
 
     <color name="color_blue_dark">#0b7098</color>
     <color name="color_blue_dark_2">#244b5a</color>
-    
+
+    <color name="color_gray_icon">#BB333333</color>
     <color name="color_gray_header">#737171</color>
 
     <color name="gm_primary_color">#27ab93</color>

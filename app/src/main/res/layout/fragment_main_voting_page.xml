@@ -15,9 +15,45 @@
         android:layout_margin="16dp"/>
 
 
+    <ImageView
+        android:id="@+id/imageview_big_like"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/icon_big_like"
+        android:visibility="invisible"/>
+    
+    
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_congrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/color_gray_icon"
+        android:text="@string/congrats_header"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageview_big_like"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible"/>
+
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_congrats_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_congrats"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="15dp"
+        android:textSize="17sp"
+        android:text="@string/congrats_content"
+        android:visibility="invisible"/>
+
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

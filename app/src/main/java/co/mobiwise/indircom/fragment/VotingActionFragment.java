@@ -14,19 +14,34 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
+import com.squareup.picasso.Picasso;
 
 import co.mobiwise.indircom.R;
+import co.mobiwise.indircom.api.ApiConstants;
+import co.mobiwise.indircom.controller.VoteRequestQueue;
 import co.mobiwise.indircom.listener.VotingActionFragmentCallback;
+import co.mobiwise.indircom.model.App;
+import co.mobiwise.indircom.views.RobotoMediumTextView;
 
 /**
  * Created by mac on 21/03/15.
  */
 public class VotingActionFragment extends Fragment implements View.OnClickListener{
 
+
+    /**
+     * The argument keys
+     */
+    public static final String ARG_APP_ID = "app_id";
+    public static final String ARG_APP_NAME = "app_name";
+    public static final String ARG_APP_DESCRIPTION = "app_description";
+    public static final String ARG_APP_DOWNLOAD_URL = "app_download_url";
+    public static final String ARG_APP_IMAGE_URL = "app_image_url";
+
     /**
      * To notify necessary method when vote action fragment process happen.
      */
-    private VotingActionFragmentCallback voting_action_fragment_callback;
+    private VotingActionFragmentCallback votingActionFragmentCallback;
 
     /**
      * TAG to log.
@@ -34,31 +49,37 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     public static final String TAG = "VotingActionFragment";
 
     /**
-     * The argument key for the page number this fragment represents.
-     */
-    public static final String ARG_PAGE = "page";
-
-    /**
-     * The fragment's page number
-     */
-    private int mPageNumber;
-
-    /**
      * VotingActionFragment views
      */
 
-    private RoundedImageView imageview_app;
-    private ImageView imageview_like;
-    private ImageView imageview_dislike;
+    private RoundedImageView imageviewApp;
+    private ImageView imageviewLike;
+    private ImageView imageviewDislike;
+    private RobotoMediumTextView textviewAppName;
+
+    /**
+     * The fragment's values to show users
+     */
+    private int  mAppId;
+    private String mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl;
 
     /**
      * Factory method for this fragment class
      */
-    public static VotingActionFragment newInstance(int pageNumber) {
+    public static VotingActionFragment newInstance(App app) {
         VotingActionFragment votingActionFragment = new VotingActionFragment();
+
+        /**
+         * Puts app values to bundle
+         */
         Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, pageNumber);
+        args.putInt(ARG_APP_ID, app.getAppId());
+        args.putString(ARG_APP_NAME, app.getAppName());
+        args.putString(ARG_APP_DESCRIPTION, app.getAppDescription());
+        args.putString(ARG_APP_DOWNLOAD_URL, app.getAppDownloadUrl());
+        args.putString(ARG_APP_IMAGE_URL, app.getAppImageUrl());
         votingActionFragment.setArguments(args);
+
         return votingActionFragment;
     }
 
@@ -68,7 +89,16 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPageNumber = getArguments().getInt(ARG_PAGE);
+
+        /**
+         * Gets app values from bundle.
+         */
+        mAppId = getArguments().getInt(ARG_APP_ID);
+        mAppName = getArguments().getString(ARG_APP_NAME);
+        mAppDownloadUrl = getArguments().getString(ARG_APP_DOWNLOAD_URL);
+        mAppImageUrl = getArguments().getString(ARG_APP_IMAGE_URL);
+        mAppDescription = getArguments().getString(ARG_APP_DESCRIPTION);
+
     }
 
     @Override
@@ -89,20 +119,26 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
     private void initializeView(View view) {
 
-        imageview_app = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
-        imageview_like = (ImageView) view.findViewById(R.id.image_like);
-        imageview_dislike = (ImageView) view.findViewById(R.id.image_dislike);
+        /**
+         * Find views by id.
+         */
+        textviewAppName = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
+        imageviewApp = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
+        imageviewLike = (ImageView) view.findViewById(R.id.image_like);
+        imageviewDislike = (ImageView) view.findViewById(R.id.image_dislike);
 
-        imageview_like.setOnClickListener(this);
-        imageview_dislike.setOnClickListener(this);
-    }
+        /**
+         * sets click listeners
+         */
+        imageviewLike.setOnClickListener(this);
+        imageviewDislike.setOnClickListener(this);
 
-    /**
-     * Returns the page number represented by this fragment object.
-     */
-    public int getPageNumber() {
+        /**
+         * Load values to widgets
+         */
+        Picasso.with(getActivity().getApplicationContext()).load(mAppImageUrl).into(imageviewApp);
+        textviewAppName.setText(mAppName);
 
-        return mPageNumber;
     }
 
     /**
@@ -113,23 +149,35 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
+        /**
+         *create app object with values
+         */
+        App app = new App(mAppId,mAppName,mAppDescription,mAppImageUrl,mAppDownloadUrl);
+        int vote = 0;
+
+        /**
+         * On button click cases.
+         */
         switch (v.getId()) {
-            case R.id.imageview_app_image:
-                voting_action_fragment_callback.setCurrentPage(mPageNumber + 1);
-                break;
             case R.id.image_like:
-                //TODO send request to request queue
-                imageview_like.setBackgroundResource(R.drawable.icon_like_selected);
-                animateVoteImagesOnVote(imageview_like);
+                vote = ApiConstants.LIKE;
+                imageviewLike.setBackgroundResource(R.drawable.icon_like_selected);
+                animateVoteImagesOnVote(imageviewLike);
                 break;
             case R.id.image_dislike:
-                //TODO send request to request queue
-                imageview_dislike.setBackgroundResource(R.drawable.icon_dislike_selected);
-                animateVoteImagesOnVote(imageview_dislike);
+                vote = ApiConstants.DISLIKE;
+                imageviewDislike.setBackgroundResource(R.drawable.icon_dislike_selected);
+                animateVoteImagesOnVote(imageviewDislike);
                 break;
             default:
                 break;
         }
+
+        /**
+         * set like or dislike and add app request queue.
+         */
+        app.setUserVote(vote);
+        VoteRequestQueue.getInstance(getActivity().getApplicationContext()).addVote(app);
     }
 
     @Override
@@ -157,8 +205,8 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         /**
          * Set like buttons non-clickable
          */
-        imageview_dislike.setClickable(false);
-        imageview_like.setClickable(false);
+        imageviewDislike.setClickable(false);
+        imageviewLike.setClickable(false);
 
         /**
          * Animate clicked vote button and notify to change app when animation end.
@@ -174,7 +222,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                voting_action_fragment_callback.onVotingAnimationEnd();
+                votingActionFragmentCallback.onVotingAnimationEnd();
             }
 
             @Override
@@ -191,10 +239,10 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
 
     /**
      * set MainVotingFragment to give call back.
-     * @param voting_action_fragment_callback
+     * @param votingActionFragmentCallback
      */
-    public void setVotingActionCallback(VotingActionFragmentCallback voting_action_fragment_callback){
-        this.voting_action_fragment_callback = voting_action_fragment_callback;
+    public void setVotingActionCallback(VotingActionFragmentCallback votingActionFragmentCallback){
+        this.votingActionFragmentCallback = votingActionFragmentCallback;
     }
 
 }
