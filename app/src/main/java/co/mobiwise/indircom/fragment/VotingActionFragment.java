@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -26,8 +27,7 @@ import co.mobiwise.indircom.views.RobotoMediumTextView;
 /**
  * Created by mac on 21/03/15.
  */
-public class VotingActionFragment extends Fragment implements View.OnClickListener{
-
+public class VotingActionFragment extends Fragment implements View.OnClickListener {
 
     /**
      * The argument keys
@@ -51,6 +51,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     /**
      * VotingActionFragment views
      */
+    public static final String ARG_PAGE = "page";
 
     private RoundedImageView imageviewApp;
     private ImageView imageviewLike;
@@ -79,7 +80,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         args.putString(ARG_APP_DOWNLOAD_URL, app.getAppDownloadUrl());
         args.putString(ARG_APP_IMAGE_URL, app.getAppImageUrl());
         votingActionFragment.setArguments(args);
-
         return votingActionFragment;
     }
 
@@ -126,7 +126,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         imageviewApp = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
         imageviewLike = (ImageView) view.findViewById(R.id.image_like);
         imageviewDislike = (ImageView) view.findViewById(R.id.image_dislike);
-
         /**
          * sets click listeners
          */
@@ -138,8 +137,11 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          */
         Picasso.with(getActivity().getApplicationContext()).load(mAppImageUrl).into(imageviewApp);
         textviewAppName.setText(mAppName);
-
+        
     }
+      
+
+    
 
     /**
      * OnClick method for imageview's
@@ -200,7 +202,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      * Animator of clicked vote button
      * @param imageView
      */
-    private void animateVoteImagesOnVote(ImageView imageView){
+    private void animateVoteImagesOnVote(ImageView imageView) {
 
         /**
          * Set like buttons non-clickable
@@ -245,4 +247,18 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         this.votingActionFragmentCallback = votingActionFragmentCallback;
     }
 
+    /**
+     * show app detail page method
+     */
+    private void openAppDetailPage() {
+
+        //TODO remove the comment after merge
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, AppDetailFragment.newInstance("mAppName", "mAppDescription", "mAppDownloadUrl")).addToBackStack("AppDetailFragment").setCustomAnimations(R.animator.slide_up,
+                R.animator.slide_down,
+                R.animator.slide_up,
+                R.animator.slide_down)
+                .commit();
+    }
 }

@@ -1,5 +1,7 @@
 package co.mobiwise.indircom.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,21 +9,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.github.siyamed.shapeimageview.RoundedImageView;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 import co.mobiwise.indircom.views.RobotoTextView;
 
-/**
- * Created by mac on 14/03/15.
- */
-public class AppDetailFragment extends Fragment {
 
-    private ImageView imageview_app_detail_image;
-    private RobotoMediumTextView textview_app_name;
-    private RobotoTextView textview_app_category, textview_app_description;
-    private RelativeLayout layout_app_download;
+public class AppDetailFragment extends Fragment implements View.OnClickListener {
+
+    /**
+     * Views
+     */
+    private RoundedImageView imageviewAppDetailImage;
+    private RobotoMediumTextView textviewAppName;
+    private RobotoTextView textviewAppCategory, textviewAppDescription;
+    private RelativeLayout layoutAppDownload;
+    private ImageView imageViewBack;
+
+    /**
+     * The argument keys
+     */
+    public static final String APP_NAME = "appName";
+    public static final String APP_DESCRIPTION = "appDescription";
+    public static final String APP_DOWNLOAD_LINK = "appDownloadLink";
+
+    /**
+     * The argument values
+     */
+    private String mAppName;
+    private String mAppDescription;
+    private String mAppDownloadLink;
 
     public AppDetailFragment() {
     }
@@ -30,8 +51,13 @@ public class AppDetailFragment extends Fragment {
      * Static factory method that returns the
      * new fragment to the client.
      */
-    public static AppDetailFragment newInstance() {
+    public static AppDetailFragment newInstance(String appName, String mAppDescription, String appDownloadLink) {
         AppDetailFragment appDetailFragment = new AppDetailFragment();
+        Bundle args = new Bundle();
+        args.putString(APP_NAME, appName);
+        args.putString(APP_DESCRIPTION, mAppDescription);
+        args.putString(APP_DOWNLOAD_LINK, appDownloadLink);
+        appDetailFragment.setArguments(args);
         return appDetailFragment;
     }
 
@@ -43,31 +69,72 @@ public class AppDetailFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAppName = getArguments().getString(APP_NAME);
+        mAppDescription = getArguments().getString(APP_DESCRIPTION);
+        mAppDownloadLink = getArguments().getString(APP_DOWNLOAD_LINK);
+    }
 
     /**
+     * initialize views
+     *
      * @param view
      */
     private void initializeView(View view) {
 
-        imageview_app_detail_image = (ImageView) view.findViewById(R.id.imageview_app_detail_image);
-        textview_app_name = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
-        textview_app_category = (RobotoTextView) view.findViewById(R.id.textview_app_category);
-        textview_app_description = (RobotoTextView) view.findViewById(R.id.textview_app_description);
-        layout_app_download = (RelativeLayout) view.findViewById(R.id.layout_app_download);
+        imageviewAppDetailImage = (RoundedImageView) view.findViewById(R.id.imageview_app_detail_image);
+        textviewAppName = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
+        textviewAppCategory = (RobotoTextView) view.findViewById(R.id.textview_app_category);
+        textviewAppDescription = (RobotoTextView) view.findViewById(R.id.textview_app_description);
+        layoutAppDownload = (RelativeLayout) view.findViewById(R.id.layout_app_download);
+        imageViewBack = (ImageView) view.findViewById(R.id.imageview_back);
+
+        layoutAppDownload.setOnClickListener(this);
+        imageViewBack.setOnClickListener(this);
 
     }
-
 
     /**
-     * Opens Google Play App Page. This method is bound from fragment_app_detail.xml.
-     *
-     * @param view
+     * @param downloadLink app Google Play Store or App Store download Link
+     * @return
      */
-    public void openGooglePlayPage(View view) {
-        if (Connectivity.isConnected(getActivity().getApplicationContext())) {
-
-        }
+    public boolean validateDownloadURL(String downloadLink) {
+        return false;
     }
 
+    @Override
+    public void onClick(View v) {
 
+        switch (v.getId()) {
+            /**
+             *  listener method for imageviewAppDetailImage. Opens Google Play App Page.
+             */
+            case R.id.layout_app_download:
+                /**
+                 * check the internet connection
+                 */
+                if (Connectivity.isConnected(getActivity().getApplicationContext())) {
+                    if (validateDownloadURL(mAppDownloadLink)) {
+                        /**
+                         * startActivity
+                         */
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + mAppDownloadLink)));
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.cannot_download_app), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            /**
+             * listener method for imageview_back. Back the previous fragment
+             */
+
+            case R.id.imageview_back:
+                getActivity().getSupportFragmentManager().popBackStack();
+                break;
+        }
+    }
 }
