@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/background_app_detail">
 
     <ImageView
         android:id="@+id/imageview_back"
@@ -75,8 +75,8 @@
 
         <ImageView
             android:id="@+id/icon_download"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:src="@drawable/icon_download_app" />
@@ -91,7 +91,8 @@
             android:layout_toRightOf="@+id/icon_download"
             android:text="@string/app_download_message"
             android:textColor="@color/color_app_detail_download_button_bg"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
     </RelativeLayout>
 

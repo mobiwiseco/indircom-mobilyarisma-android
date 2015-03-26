@@ -5,14 +5,6 @@
     android:background="@drawable/bg_pink"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <ImageView
-        android:id="@+id/imageview_menu"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/icon_menu"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="16dp"/>
 
 
     <ImageView
@@ -22,20 +14,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:background="@drawable/icon_big_like"
-        android:visibility="invisible"/>
-    
-    
+        android:visibility="invisible" />
+
+
     <co.mobiwise.indircom.views.RobotoMediumTextView
         android:id="@+id/textview_congrats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/color_gray"
-        android:text="@string/congrats_header"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageview_big_like"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:visibility="invisible"/>
+        android:text="@string/congrats_header"
+        android:textColor="@color/color_gray"
+        android:textSize="20sp"
+        android:visibility="invisible" />
 
     <co.mobiwise.indircom.views.RobotoMediumTextView
         android:id="@+id/textview_congrats_content"
@@ -43,17 +35,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textview_congrats"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="15dp"
-        android:textSize="17sp"
+        android:gravity="center_horizontal"
         android:text="@string/congrats_content"
-        android:visibility="invisible"/>
+        android:textSize="17sp"
+        android:visibility="invisible" />
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

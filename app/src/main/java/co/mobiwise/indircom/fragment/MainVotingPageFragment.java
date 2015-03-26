@@ -29,7 +29,7 @@ import co.mobiwise.indircom.views.RobotoMediumTextView;
 /**
  * Created by mac on 13/03/15.
  */
-public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener{
+public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener {
 
     /**
      * To achieve mPager from MainActivity, define as static
@@ -45,8 +45,9 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     /**
      * Empty page items
      */
-    ImageView imageviewCongrats;
-    RobotoMediumTextView textviewCongratsHeader, textviewCongratsContent;
+    private ImageView imageviewCongrats;
+    private RobotoMediumTextView textviewCongratsHeader, textviewCongratsContent;
+
 
     /**
      * Animations for empty page transition.
@@ -79,6 +80,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         imageviewCongrats = (ImageView) rootView.findViewById(R.id.imageview_big_like);
         textviewCongratsHeader = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats);
         textviewCongratsContent = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats_content);
+
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -116,7 +118,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         Api api = Api.getInstance(getActivity().getApplicationContext());
         api.registerAppsFetchListener(MainVotingPageFragment.this);
         api.getApps(user.getToken(), user.getAuth_id());
-        Log.v(TAG,"onActivityCreated");
+        Log.v(TAG, "onActivityCreated");
     }
 
     @Override
@@ -137,13 +139,12 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
          */
         final int tempIndex = mPager.getCurrentItem();
 
-        if(mPagerAdapter.getCount()>1){
-            if(tempIndex == (mPagerAdapter.getCount()-1))
+        if (mPagerAdapter.getCount() > 1) {
+            if (tempIndex == (mPagerAdapter.getCount() - 1))
                 mPager.setCurrentItem(tempIndex - 1);
             else
                 mPager.setCurrentItem(tempIndex + 1);
-        }
-        else
+        } else
             showEmptyPageItems();
 
         /**
@@ -156,8 +157,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
             @Override
             public void run() {
                 mPagerAdapter.removeApp(tempIndex);
-                if(mPagerAdapter.getCount() > 1)
-                    mPager.setCurrentItem(tempIndex,false);
+                if (mPagerAdapter.getCount() > 1)
+                    mPager.setCurrentItem(tempIndex, false);
             }
         }, 350);
     }
@@ -170,7 +171,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
         mPagerAdapter.setAppList(apps);
-        if(apps.size() == 0)
+        if (apps.size() == 0)
             showEmptyPageItems();
         //TODO dismiss dialog.
     }
@@ -178,7 +179,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     /**
      * Shows views when all apps are voted.
      */
-    private void showEmptyPageItems(){
+    private void showEmptyPageItems() {
 
         mPager.setVisibility(View.INVISIBLE);
         mPager.startAnimation(fadeOut);

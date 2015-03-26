@@ -91,6 +91,9 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
         layoutAppDownload = (RelativeLayout) view.findViewById(R.id.layout_app_download);
         imageViewBack = (ImageView) view.findViewById(R.id.imageview_back);
 
+        textviewAppName.setText(mAppName);
+        textviewAppDescription.setText(mAppDescription);
+
         layoutAppDownload.setOnClickListener(this);
         imageViewBack.setOnClickListener(this);
 

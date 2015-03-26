@@ -1,15 +1,13 @@
 package co.mobiwise.indircom.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -56,12 +54,13 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     private RoundedImageView imageviewApp;
     private ImageView imageviewLike;
     private ImageView imageviewDislike;
+    private ImageView imageviewInfo;
     private RobotoMediumTextView textviewAppName;
 
     /**
      * The fragment's values to show users
      */
-    private int  mAppId;
+    private int mAppId;
     private String mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl;
 
     /**
@@ -126,22 +125,22 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         imageviewApp = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
         imageviewLike = (ImageView) view.findViewById(R.id.image_like);
         imageviewDislike = (ImageView) view.findViewById(R.id.image_dislike);
+        imageviewInfo = (ImageView) view.findViewById(R.id.image_info);
+
         /**
          * sets click listeners
          */
         imageviewLike.setOnClickListener(this);
         imageviewDislike.setOnClickListener(this);
-
+        imageviewInfo.setOnClickListener(this);
         /**
          * Load values to widgets
          */
         Picasso.with(getActivity().getApplicationContext()).load(mAppImageUrl).into(imageviewApp);
         textviewAppName.setText(mAppName);
-        
-    }
-      
 
-    
+    }
+
 
     /**
      * OnClick method for imageview's
@@ -154,7 +153,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         /**
          *create app object with values
          */
-        App app = new App(mAppId,mAppName,mAppDescription,mAppImageUrl,mAppDownloadUrl);
+        App app = new App(mAppId, mAppName, mAppDescription, mAppImageUrl, mAppDownloadUrl);
         int vote = 0;
 
         /**
@@ -171,6 +170,8 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
                 imageviewDislike.setBackgroundResource(R.drawable.icon_dislike_selected);
                 animateVoteImagesOnVote(imageviewDislike);
                 break;
+            case R.id.image_info:
+                openAppDetailPage();
             default:
                 break;
         }
@@ -187,19 +188,10 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         super.onActivityCreated(savedInstanceState);
     }
 
-    /**
-     * convert a Drawable to a Bitmap
-     *
-     * @param image_resource
-     * @return
-     */
-    private Bitmap convertDrawabletoBitmap(int image_resource) {
-        return BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
-                image_resource);
-    }
 
     /**
      * Animator of clicked vote button
+     *
      * @param imageView
      */
     private void animateVoteImagesOnVote(ImageView imageView) {
@@ -209,6 +201,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          */
         imageviewDislike.setClickable(false);
         imageviewLike.setClickable(false);
+        imageviewInfo.setClickable(false);
 
         /**
          * Animate clicked vote button and notify to change app when animation end.
@@ -241,9 +234,10 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
 
     /**
      * set MainVotingFragment to give call back.
+     *
      * @param votingActionFragmentCallback
      */
-    public void setVotingActionCallback(VotingActionFragmentCallback votingActionFragmentCallback){
+    public void setVotingActionCallback(VotingActionFragmentCallback votingActionFragmentCallback) {
         this.votingActionFragmentCallback = votingActionFragmentCallback;
     }
 
@@ -252,13 +246,29 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
     private void openAppDetailPage() {
 
-        //TODO remove the comment after merge
+        AppDetailFragment appDetailFragment = new AppDetailFragment();
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, AppDetailFragment.newInstance("mAppName", "mAppDescription", "mAppDownloadUrl")).addToBackStack("AppDetailFragment").setCustomAnimations(R.animator.slide_up,
-                R.animator.slide_down,
-                R.animator.slide_up,
-                R.animator.slide_down)
-                .commit();
+        /**
+         * putting values to bundle
+         */
+        Bundle bundle = new Bundle();
+        bundle.putString("appName", mAppName);
+        bundle.putString("appDescription", mAppDescription);
+        bundle.putString("appDownloadLink", mAppDownloadUrl);
+
+        /**
+         * setting bundle
+         */
+        appDetailFragment.setArguments(bundle);
+        /**
+         * creating transaction for fragment
+         */
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        ft.replace(R.id.container, appDetailFragment, "appDetailFragment");
+        ft.addToBackStack("appDetailFragment");
+        /** Start fragment */
+        ft.commitAllowingStateLoss();
+
     }
 }
