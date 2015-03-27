@@ -1,18 +1,24 @@
 package co.mobiwise.indircom.fragment;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import co.mobiwise.indircom.R;
+import co.mobiwise.indircom.views.RobotoTextView;
 
 /**
  * Created by mac on 27/03/15.
  */
 public class AboutFragment extends Fragment {
+
+    private RobotoTextView mTextViewAppVersion;
+    private ImageView mImageViewBack;
 
     public AboutFragment() {
     }
@@ -34,18 +40,37 @@ public class AboutFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_about, container, false);
 
-        initializeView(rootView);
+        mTextViewAppVersion = (RobotoTextView) rootView.findViewById(R.id.app_version);
+        mImageViewBack = (ImageView) rootView.findViewById(R.id.imageview_about_back);
 
+        mTextViewAppVersion.setText(getAppVersion());
+
+        /**
+         * listener for back button
+         */
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         return rootView;
     }
 
 
     /**
-     * initialize all view
+     * finding app version number in code
      *
-     * @param rootView rootView from ViewGroup
+     * @return app version. Really.
      */
-    private void initializeView(ViewGroup rootView) {
-        //TODO after getting UI details, fill this method
+    private String getAppVersion() {
+        String appVersion;
+        try {
+            String pkg = getActivity().getApplicationContext().getPackageName();
+            appVersion = getActivity().getApplicationContext().getPackageManager().getPackageInfo(pkg, 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            appVersion = "-";
+        }
+        return appVersion;
     }
 }

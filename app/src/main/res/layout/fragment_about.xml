@@ -1,8 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_pink"
-    android:orientation="vertical">
+    android:background="@drawable/bg_pink">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageview_about_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/back" />
+
+
+    <ImageView
+        android:id="@+id/imageview_app_detail_image"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/imageview_about_back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/developedby" />
+
+    <ImageView
+        android:id="@+id/mobiwise_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/imageview_app_detail_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/mobiwise_logo" />
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="200dp"
+        android:layout_height="2dp"
+        android:layout_below="@id/mobiwise_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_gray"></View>
+
+    <co.mobiwise.indircom.views.RobotoTextView
+        android:id="@+id/app_version_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/app_version"
+        android:textStyle="bold" />
+
+    <co.mobiwise.indircom.views.RobotoTextView
+        android:id="@+id/app_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_version_placeholder"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/indircom_app_name_place_holder" />
+
+</RelativeLayout>
