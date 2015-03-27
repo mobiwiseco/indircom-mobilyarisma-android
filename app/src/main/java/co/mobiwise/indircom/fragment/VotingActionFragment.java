@@ -245,27 +245,15 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      * show app detail page method
      */
     private void openAppDetailPage() {
-
-        AppDetailFragment appDetailFragment = new AppDetailFragment();
-
-        /**
-         * putting values to bundle
-         */
-        Bundle bundle = new Bundle();
-        bundle.putString("appName", mAppName);
-        bundle.putString("appDescription", mAppDescription);
-        bundle.putString("appDownloadLink", mAppDownloadUrl);
-
-        /**
-         * setting bundle
-         */
-        appDetailFragment.setArguments(bundle);
         /**
          * creating transaction for fragment
          */
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        /**
+         * creating animation for transaction
+         */
         ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        ft.replace(R.id.container, appDetailFragment, "appDetailFragment");
+        ft.add(R.id.container, AppDetailFragment.newInstance(mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl), "appDetailFragment");
         ft.addToBackStack("appDetailFragment");
         /** Start fragment */
         ft.commitAllowingStateLoss();
