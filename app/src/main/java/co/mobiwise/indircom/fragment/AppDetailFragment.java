@@ -101,9 +101,13 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
+
         return false;
     }
 
+    /**
+     * @param v
+     */
     @Override
     public void onClick(View v) {
 
