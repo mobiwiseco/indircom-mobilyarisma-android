@@ -12,9 +12,6 @@ import android.widget.ImageView;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.views.RobotoTextView;
 
-/**
- * Created by mac on 27/03/15.
- */
 public class AboutFragment extends Fragment {
 
     private RobotoTextView mTextViewAppVersion;
@@ -29,10 +26,8 @@ public class AboutFragment extends Fragment {
      */
     public static AboutFragment newInstance() {
         AboutFragment aboutFragment = new AboutFragment();
-
         return aboutFragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +37,6 @@ public class AboutFragment extends Fragment {
 
         mTextViewAppVersion = (RobotoTextView) rootView.findViewById(R.id.app_version);
         mImageViewBack = (ImageView) rootView.findViewById(R.id.imageview_about_back);
-
         mTextViewAppVersion.setText(getAppVersion());
 
         /**
@@ -56,7 +50,6 @@ public class AboutFragment extends Fragment {
         });
         return rootView;
     }
-
 
     /**
      * finding app version number in code

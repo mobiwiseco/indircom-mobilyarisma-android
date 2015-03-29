@@ -93,7 +93,6 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
 
         layoutAppDownload.setOnClickListener(this);
         imageViewBack.setOnClickListener(this);
-
     }
 
     /**
@@ -101,16 +100,12 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-
+        //TODO update this method after getting services details
         return false;
     }
 
-    /**
-     * @param v
-     */
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             /**
              *  listener method for imageviewAppDetailImage. Opens Google Play App Page.
@@ -135,7 +130,6 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
             /**
              * listener method for imageview_back. Back the previous fragment
              */
-
             case R.id.imageview_back:
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
