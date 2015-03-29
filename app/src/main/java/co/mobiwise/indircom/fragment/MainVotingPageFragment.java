@@ -81,7 +81,6 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         textviewCongratsHeader = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats);
         textviewCongratsContent = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats_content);
 
-
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
 
@@ -140,12 +139,14 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         final int tempIndex = mPager.getCurrentItem();
 
         if (mPagerAdapter.getCount() > 1) {
-            if (tempIndex == (mPagerAdapter.getCount() - 1))
+            if (tempIndex == (mPagerAdapter.getCount() - 1)) {
                 mPager.setCurrentItem(tempIndex - 1);
-            else
+            } else {
                 mPager.setCurrentItem(tempIndex + 1);
-        } else
+            }
+        } else {
             showEmptyPageItems();
+        }
 
         /**
          * Removing Item from pager adapter blocks changing current item
@@ -171,9 +172,11 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
         mPagerAdapter.setAppList(apps);
-        if (apps.size() == 0)
+        if (apps.size() == 0) {
             showEmptyPageItems();
-        //TODO dismiss dialog.
+        } else {
+            //TODO dismiss dialog.
+        }
     }
 
     /**

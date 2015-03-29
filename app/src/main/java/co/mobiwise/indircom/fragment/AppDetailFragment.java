@@ -111,7 +111,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-        //TODO should check the URL
+        //TODO update the method after getting service details
         return false;
     }
 
