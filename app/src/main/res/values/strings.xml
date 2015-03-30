@@ -21,7 +21,7 @@
     <!-- Empty page texts when all apps voted -->
     <string name="congrats_header">TEBRİKLER!</string>
     <string name="congrats_content">Tüm uygulamaları oyladınız. Uygulamalara destek olduğunuz için teşekkür ederiz. Dilerseniz uygulamamızı kaldırabilirsiniz.</string>
-
+    <string name="app_version">Application Version</string>
 
 
 </resources>
