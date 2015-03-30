@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.utils.Connectivity;
@@ -36,6 +37,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     public static final String APP_NAME = "appName";
     public static final String APP_DESCRIPTION = "appDescription";
     public static final String APP_DOWNLOAD_LINK = "appDownloadLink";
+    public static final String APP_IMAGE_DOWNLOAD_LINK = "appImageDownloadLink";
 
     /**
      * The argument values
@@ -43,6 +45,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     private String mAppName;
     private String mAppDescription;
     private String mAppDownloadLink;
+    private String mAppImageDownloadLink;
 
     public AppDetailFragment() {
     }
@@ -51,12 +54,13 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * Static factory method that returns the
      * new fragment to the client.
      */
-    public static AppDetailFragment newInstance(String appName, String mAppDescription, String appDownloadLink) {
+    public static AppDetailFragment newInstance(String appName, String mAppDescription, String appDownloadLink, String appImageDownloadURL) {
         AppDetailFragment appDetailFragment = new AppDetailFragment();
         Bundle args = new Bundle();
         args.putString(APP_NAME, appName);
         args.putString(APP_DESCRIPTION, mAppDescription);
         args.putString(APP_DOWNLOAD_LINK, appDownloadLink);
+        args.putString(APP_IMAGE_DOWNLOAD_LINK, appImageDownloadURL);
         appDetailFragment.setArguments(args);
         return appDetailFragment;
     }
@@ -75,6 +79,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
         mAppName = getArguments().getString(APP_NAME);
         mAppDescription = getArguments().getString(APP_DESCRIPTION);
         mAppDownloadLink = getArguments().getString(APP_DOWNLOAD_LINK);
+        mAppImageDownloadLink = getArguments().getString(APP_IMAGE_DOWNLOAD_LINK);
     }
 
     /**
@@ -90,6 +95,11 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
         textviewAppDescription = (RobotoTextView) view.findViewById(R.id.textview_app_description);
         layoutAppDownload = (RelativeLayout) view.findViewById(R.id.layout_app_download);
         imageViewBack = (ImageView) view.findViewById(R.id.imageview_back);
+
+        textviewAppName.setText(mAppName);
+        textviewAppDescription.setText(mAppDescription);
+
+        Picasso.with(getActivity().getApplicationContext()).load(mAppImageDownloadLink).into(imageviewAppDetailImage);
 
         layoutAppDownload.setOnClickListener(this);
         imageViewBack.setOnClickListener(this);
