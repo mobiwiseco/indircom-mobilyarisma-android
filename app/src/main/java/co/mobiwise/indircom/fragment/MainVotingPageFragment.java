@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 
 import co.mobiwise.indircom.R;
@@ -56,6 +58,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
      * Tag to log.
      */
     private String TAG = "MainVotingPageFragment";
+
+    private MaterialDialog materialDialog;
 
     public MainVotingPageFragment() {
     }
@@ -163,7 +167,11 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onAppsStartFetching() {
-        //TODO start showing dialog.
+        /**
+         * start showing dialog when app fetching starts
+         */
+        materialDialog = co.mobiwise.indircom.utils.MaterialDialog.newInstance(getActivity()).createScanningDialog(getActivity().getResources().getString(R.string.fetching_app_message), getActivity());
+        materialDialog.show();
     }
 
     @Override
@@ -172,7 +180,12 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         if (apps.size() == 0) {
             showEmptyPageItems();
         } else {
-            //TODO dismiss dialog.
+            /**
+             *  dismiss dialog when app fetching completed
+             */
+            if (materialDialog != null) {
+                materialDialog.cancel();
+            }
         }
     }
 
