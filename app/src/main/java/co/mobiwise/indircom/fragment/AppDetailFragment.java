@@ -104,12 +104,19 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     }
 
     /**
+     * if downloadLink is null, that means it is only avaiable for iOS, then return false.
+     * if downloadLink is not null, that means it is avaiable for Android. then return true.
+     * All the structure build by information getting from api for this app
+     *
      * @param downloadLink app Google Play Store or App Store download Link
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-        //TODO update this method after getting services details
-        return false;
+        if (downloadLink != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -127,7 +134,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
                         /**
                          * startActivity
                          */
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + mAppDownloadLink)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mAppDownloadLink)));
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.cannot_download_app), Toast.LENGTH_SHORT).show();
                     }
