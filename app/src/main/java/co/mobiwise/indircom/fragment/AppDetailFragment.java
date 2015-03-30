@@ -23,6 +23,13 @@ import co.mobiwise.indircom.views.RobotoTextView;
 public class AppDetailFragment extends Fragment implements View.OnClickListener {
 
     /**
+     * The argument keys
+     */
+    public static final String APP_NAME = "appName";
+    public static final String APP_DESCRIPTION = "appDescription";
+    public static final String APP_DOWNLOAD_LINK = "appDownloadLink";
+    public static final String APP_IMAGE_DOWNLOAD_LINK = "appImageDownloadLink";
+    /**
      * Views
      */
     private RoundedImageView imageviewAppDetailImage;
@@ -30,15 +37,6 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     private RobotoTextView textviewAppCategory, textviewAppDescription;
     private RelativeLayout layoutAppDownload;
     private ImageView imageViewBack;
-
-    /**
-     * The argument keys
-     */
-    public static final String APP_NAME = "appName";
-    public static final String APP_DESCRIPTION = "appDescription";
-    public static final String APP_DOWNLOAD_LINK = "appDownloadLink";
-    public static final String APP_IMAGE_DOWNLOAD_LINK = "appImageDownloadLink";
-
     /**
      * The argument values
      */

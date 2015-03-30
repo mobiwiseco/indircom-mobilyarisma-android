@@ -21,9 +21,6 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-/**
- * Created by mac on 17/03/15.
- */
 public class TwitterLoginFragment extends Fragment {
 
     private SocialAuthListener socialAuthListener;

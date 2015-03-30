@@ -10,9 +10,6 @@ import co.mobiwise.indircom.fragment.MainVotingPageFragment;
 import co.mobiwise.indircom.fragment.VotingActionFragment;
 import co.mobiwise.indircom.model.App;
 
-/**
- * Created by mac on 21/03/15.
- */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public static final String TAG = "ViewPagerAdapter";
@@ -27,19 +24,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         appList = new ArrayList<>();
     }
 
-    public void setAppList(ArrayList<App> app_list){
+    public void setAppList(ArrayList<App> app_list) {
         this.appList = app_list;
         notifyDataSetChanged();
     }
 
-    public void removeApp(int index){
+    public void removeApp(int index) {
         appList.remove(index);
         notifyDataSetChanged();
     }
 
     @Override
     public Fragment getItem(int position) {
-        VotingActionFragment votingActionFragment =  VotingActionFragment.newInstance(appList.get(position));
+        VotingActionFragment votingActionFragment = VotingActionFragment.newInstance(appList.get(position));
         votingActionFragment.setVotingActionCallback((MainVotingPageFragment) fragment);
         return votingActionFragment;
     }
@@ -53,5 +50,4 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
-
 }

@@ -1,8 +1,5 @@
 package co.mobiwise.indircom.utils;
 
-/**
- * Created by mac on 18/03/15.
- */
 public class SocialConstants {
 
     /*Twitter API Constants*/

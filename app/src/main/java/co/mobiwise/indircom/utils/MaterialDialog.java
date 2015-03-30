@@ -6,28 +6,25 @@ import android.content.Context;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 
-/**
- * Created by Bahadır on 20.3.2015.
- */
-public class MaterialDialog extends com.afollestad.materialdialogs.MaterialDialog.Builder{
-
-
-    public static MaterialDialog newInstance(Context context){
-        return new MaterialDialog(context);
-    }
+public class MaterialDialog extends com.afollestad.materialdialogs.MaterialDialog.Builder {
 
 
     private MaterialDialog(Context context) {
         super(context);
     }
 
+    public static MaterialDialog newInstance(Context context) {
+        return new MaterialDialog(context);
+    }
+
     /**
      * createScanningDialog
+     *
      * @param content
      * @param activity
      * @return
      */
-    public com.afollestad.materialdialogs.MaterialDialog createScanningDialog(String content,Activity activity){
+    public com.afollestad.materialdialogs.MaterialDialog createScanningDialog(String content, Activity activity) {
 
         com.afollestad.materialdialogs.MaterialDialog dialog = new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
                 .customView(R.layout.dialog_loading)
@@ -38,6 +35,4 @@ public class MaterialDialog extends com.afollestad.materialdialogs.MaterialDialo
         dialog.setCancelable(false);
         return dialog;
     }
-
-
 }

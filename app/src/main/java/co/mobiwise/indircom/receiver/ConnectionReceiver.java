@@ -7,11 +7,8 @@ import android.content.Intent;
 import co.mobiwise.indircom.service.VoteService;
 import co.mobiwise.indircom.utils.Connectivity;
 
-/**
- * Created by mertsimsek on 23/03/15.
- */
-public class ConnectionReceiver extends BroadcastReceiver{
 
+public class ConnectionReceiver extends BroadcastReceiver {
 
     public ConnectionReceiver() {
     }

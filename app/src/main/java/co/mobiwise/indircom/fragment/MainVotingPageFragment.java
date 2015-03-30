@@ -26,9 +26,6 @@ import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 
-/**
- * Created by mac on 13/03/15.
- */
 public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener {
 
     /**

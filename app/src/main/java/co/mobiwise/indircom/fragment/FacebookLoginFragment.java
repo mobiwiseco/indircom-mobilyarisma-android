@@ -14,9 +14,6 @@ import com.facebook.model.GraphUser;
 import co.mobiwise.indircom.listener.SocialAuthListener;
 import co.mobiwise.indircom.model.User;
 
-/**
- * Created by mac on 17/03/15.
- */
 public class FacebookLoginFragment extends Fragment implements Session.StatusCallback {
 
     private static final String TAG = "FacebookLoginFragment";

@@ -13,21 +13,16 @@ import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.utils.ApplicationPreferences;
 import co.mobiwise.indircom.utils.Utils;
 
-/**
- * Created by mertsimsek on 22/03/15.
- */
-public class VoteService extends Service implements VoteListener{
-
-    /**
-     * voted-nonsent apps queue
-     */
-    private Queue<App> appQueue;
+public class VoteService extends Service implements VoteListener {
 
     /**
      * Tag for log
      */
     private static String TAG = "VoteService.class";
-
+    /**
+     * voted-nonsent apps queue
+     */
+    private Queue<App> appQueue;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -63,13 +58,13 @@ public class VoteService extends Service implements VoteListener{
     /**
      * Send vote to Api class to request.
      */
-    private void sendDataOnBackground(){
+    private void sendDataOnBackground() {
 
         Api api = Api.getInstance(getApplicationContext());
 
         App peekedApp = appQueue.peek();
 
-        if(peekedApp!=null)
+        if (peekedApp != null)
             api.voteApp(peekedApp);
         else
             stopSelf();
@@ -78,6 +73,7 @@ public class VoteService extends Service implements VoteListener{
 
     /**
      * If vote sent successfully @Api class notify here.
+     *
      * @param app
      */
     @Override
@@ -96,7 +92,7 @@ public class VoteService extends Service implements VoteListener{
         /**
          * If not data to send, then stop service.
          */
-        if(!appQueue.isEmpty())
+        if (!appQueue.isEmpty())
             sendDataOnBackground();
         else
             stopSelf();

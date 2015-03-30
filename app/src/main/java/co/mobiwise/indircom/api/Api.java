@@ -26,48 +26,40 @@ import co.mobiwise.indircom.listener.VoteListener;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
 
-/**
- * Created by mac on 13/03/15.
- */
-public class Api{
+public class Api {
 
+    /**
+     * Api instance. Seriously.
+     */
+    private static Api instance = null;
+    /**
+     * Used on Logs.
+     */
+    private static String TAG = "ApiClass";
     /**
      * Application context to use get instance of volley object.
      */
     private Context context;
-
     /**
      * Volley request to put requests.
      */
     private RequestQueue requestQueue;
-
     /**
      * RegistrationListener methods will be notified when user registration process.
      */
     private RegistrationListener registrationListener;
-
     /**
      * Vote listener to notify when vote completed.
      */
     private VoteListener voteListener;
-
     /**
      * VoteControllerListener methods will be notified while user vote process
      */
     private AppFetchControllerListener appFetchingControllerListener;
 
     /**
-     * Api instance. Seriously.
-     */
-    private static Api instance = null;
-
-    /**
-     * Used on Logs.
-     */
-    private static String TAG = "ApiClass";
-
-    /**
      * Private constructor for @Api. Also creates new instance of @RequestQueue.
+     *
      * @param context
      */
     private Api(Context context) {
@@ -77,6 +69,7 @@ public class Api{
 
     /**
      * Singleton instance method for network operations
+     *
      * @param context
      * @return
      */
@@ -90,12 +83,13 @@ public class Api{
     /**
      * Registers user to DB. Called whenever user logged in social media.
      * It is handled by server if user is already registered.
+     *
      * @param user
      */
-    public void registerUser(final User user){
+    public void registerUser(final User user) {
 
         //Notify listener registration started
-        if(registrationListener !=null)
+        if (registrationListener != null)
             registrationListener.onUserRegistrationStarted();
 
         //create webservice url
@@ -115,7 +109,7 @@ public class Api{
                     user.setSurname(responseJson.getString(ApiConstants.SURNAME));
                     user.setToken(responseJson.getString(ApiConstants.TOKEN));
 
-                    if(registrationListener !=null)
+                    if (registrationListener != null)
                         registrationListener.onUserRegistered(user);
 
                 } catch (JSONException e) {
@@ -129,7 +123,7 @@ public class Api{
                 //TODO Handle Error. Jokin' who cares.
 
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
@@ -154,17 +148,17 @@ public class Api{
      * Gets all unvoted apps by user. @VoteControllerListener will be
      * notified when apps are fetched.
      */
-    public void getApps(final String token, final String user_auth_id){
+    public void getApps(final String token, final String user_auth_id) {
 
         /**
          * Notify listener with information that unvoted apps started fetching.
          */
-        if(appFetchingControllerListener !=null){
-                appFetchingControllerListener.onAppsStartFetching();
+        if (appFetchingControllerListener != null) {
+            appFetchingControllerListener.onAppsStartFetching();
         }
 
         final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
-                                "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
+                "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
 
         StringRequest unvotedAppsRequest = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
             @Override
@@ -177,15 +171,15 @@ public class Api{
                     /**
                      * If response 200 then OK.
                      */
-                    if(appsJsonAll.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+                    if (appsJsonAll.getString(ApiConstants.CODE).equals(ApiConstants.OK)) {
 
-                        if(appsJsonAll.getString(ApiConstants.STATUS).equals(ApiConstants.STATUS_APPS)){
+                        if (appsJsonAll.getString(ApiConstants.STATUS).equals(ApiConstants.STATUS_APPS)) {
                             JSONArray appJsonArray = appsJsonAll.getJSONArray(ApiConstants.ARRAY_NAME_APPS);
 
                             /**
                              * Loop for all unvoted apps on json array.
                              */
-                            for(int i = 0 ; i < appJsonArray.length() ; i++){
+                            for (int i = 0; i < appJsonArray.length(); i++) {
 
                                 JSONObject appJsonObject = appJsonArray.getJSONObject(i);
 
@@ -204,8 +198,8 @@ public class Api{
                         /**
                          * Notify listener when apps fetched completed.
                          */
-                        if(appFetchingControllerListener !=null){
-                                appFetchingControllerListener.onAppsFetchCompleted(appList);
+                        if (appFetchingControllerListener != null) {
+                            appFetchingControllerListener.onAppsFetchCompleted(appList);
                         }
 
                     }
@@ -220,7 +214,7 @@ public class Api{
 
                 //TODO Handle Error. Jokin' who cares.
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
@@ -238,9 +232,10 @@ public class Api{
 
     /**
      * Request user vote about related apps
+     *
      * @param app
      */
-    public void voteApp(final App app){
+    public void voteApp(final App app) {
 
         Log.v(TAG, app.toString());
 
@@ -256,18 +251,18 @@ public class Api{
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
 
-                    Log.v(TAG,response);
+                    Log.v(TAG, response);
 
                     /**
                      * If response 200 then OK.
                      */
-                    if(jsonResponse.getString(ApiConstants.CODE).equals(ApiConstants.OK)){
+                    if (jsonResponse.getString(ApiConstants.CODE).equals(ApiConstants.OK)) {
 
                         /**
                          * Notify listener when app vote completed.
                          */
-                        if(voteListener !=null){
-                                voteListener.onVoteCompleted(app);
+                        if (voteListener != null) {
+                            voteListener.onVoteCompleted(app);
                         }
                     }
 
@@ -282,12 +277,12 @@ public class Api{
                 /**
                  * Notify listener when app got error.
                  */
-                if(voteListener !=null){
+                if (voteListener != null) {
                     voteListener.onErrorOccured();
                 }
 
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Put required params to maps
@@ -295,53 +290,53 @@ public class Api{
                 maps.put(ApiConstants.TOKEN, UserManager.getInstance(context).getUser().getToken());
                 maps.put(ApiConstants.RATE, String.valueOf(app.getUserVote()));
 
-                Log.v(TAG,"Token :  "+UserManager.getInstance(context).getUser().getToken());
-                Log.v(TAG,"Vote : " + String.valueOf(app.getUserVote()));
+                Log.v(TAG, "Token :  " + UserManager.getInstance(context).getUser().getToken());
+                Log.v(TAG, "Vote : " + String.valueOf(app.getUserVote()));
 
                 //return maps. Seriously.
                 return maps;
             }
         };
-
         requestQueue.add(voteRequest);
-
     }
 
     /**
      * Register registration listener to notify registration process information.
+     *
      * @param registrationListener
      */
-    public void registerRegistrationListener(RegistrationListener registrationListener){
+    public void registerRegistrationListener(RegistrationListener registrationListener) {
         this.registrationListener = registrationListener;
     }
 
     /**
      * Unregister register no needed use.
      */
-    public void unregisterRegistrationListener(){
+    public void unregisterRegistrationListener() {
         this.registrationListener = null;
     }
 
     /**
      * Register @VoteControllerListener to notify voting process informations.
+     *
      * @param appFetchingControllerListener
      */
-    public void registerAppsFetchListener(AppFetchControllerListener appFetchingControllerListener){
+    public void registerAppsFetchListener(AppFetchControllerListener appFetchingControllerListener) {
         this.appFetchingControllerListener = appFetchingControllerListener;
     }
 
     /**
      * Unregister receiver no needed use.
      */
-    public void unregisterAppsFetchListener(){
+    public void unregisterAppsFetchListener() {
         this.appFetchingControllerListener = null;
     }
 
-    public void registerVoteControllerListener(VoteListener voteListener){
+    public void registerVoteControllerListener(VoteListener voteListener) {
         this.voteListener = voteListener;
     }
 
-    public void unregisterVoteControllerListener(){
+    public void unregisterVoteControllerListener() {
         this.voteListener = null;
     }
 }

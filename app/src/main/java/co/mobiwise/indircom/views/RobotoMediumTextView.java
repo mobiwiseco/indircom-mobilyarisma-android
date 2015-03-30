@@ -5,9 +5,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-/**
- * Created by mertsimsek on 20/12/14.
- */
 public class RobotoMediumTextView extends TextView {
     public RobotoMediumTextView(Context context) {
         super(context);

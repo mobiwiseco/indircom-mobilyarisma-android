@@ -11,15 +11,11 @@ import android.webkit.WebViewClient;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.utils.SocialConstants;
 
-/**
- * Created by mac on 19/03/15.
- */
 public class TwitterLoginActivity extends ActionBarActivity {
 
+    public static final String TAG = TwitterLoginActivity.class.getSimpleName();
     WebView webView;
     WebSettings webSettings;
-    public static final String TAG = TwitterLoginActivity.class.getSimpleName();
-
 
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);

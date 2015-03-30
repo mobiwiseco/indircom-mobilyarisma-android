@@ -2,9 +2,6 @@ package co.mobiwise.indircom.listener;
 
 import co.mobiwise.indircom.model.User;
 
-/**
- * Created by mertsimsek on 21/03/15.
- */
 public interface RegistrationListener {
 
     /**

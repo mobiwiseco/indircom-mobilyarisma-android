@@ -1,8 +1,5 @@
 package co.mobiwise.indircom.model;
 
-/**
- * Created by mertsimsek on 20/03/15.
- */
 public class User {
 
     private String name;

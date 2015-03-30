@@ -21,9 +21,6 @@ import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.utils.SocialConstants;
 
-/**
- * Created by mac on 13/03/15.
- */
 public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
     private static final String TAG = "LoginActivity";
@@ -33,7 +30,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(UserManager.getInstance(getApplicationContext()).isLogin()){
+        if (UserManager.getInstance(getApplicationContext()).isLogin()) {
             Intent i = new Intent(this, MainActivity.class);
             finish();
             startActivity(i);
@@ -96,6 +93,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
 
     /**
      * Notified when facebook or twitter user logged in.
+     *
      * @param user
      */
     @Override
@@ -120,6 +118,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
 
     /**
      * Will be notified when user registration completed.
+     *
      * @param user
      */
     @Override

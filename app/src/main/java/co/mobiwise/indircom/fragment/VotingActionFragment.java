@@ -35,17 +35,14 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     public static final String ARG_APP_DESCRIPTION = "app_description";
     public static final String ARG_APP_DOWNLOAD_URL = "app_download_url";
     public static final String ARG_APP_IMAGE_URL = "app_image_url";
-
-    /**
-     * To notify necessary method when vote action fragment process happen.
-     */
-    private VotingActionFragmentCallback votingActionFragmentCallback;
-
     /**
      * TAG to log.
      */
     public static final String TAG = "VotingActionFragment";
-
+    /**
+     * To notify necessary method when vote action fragment process happen.
+     */
+    private VotingActionFragmentCallback votingActionFragmentCallback;
     /**
      * VotingActionFragment views
      */
@@ -61,6 +58,9 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
     private int mAppId;
     private String mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl;
+
+    public VotingActionFragment() {
+    }
 
     /**
      * Factory method for this fragment class
@@ -78,9 +78,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         args.putString(ARG_APP_IMAGE_URL, app.getAppImageUrl());
         votingActionFragment.setArguments(args);
         return votingActionFragment;
-    }
-
-    public VotingActionFragment() {
     }
 
     @Override

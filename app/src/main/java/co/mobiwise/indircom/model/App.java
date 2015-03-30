@@ -2,10 +2,7 @@ package co.mobiwise.indircom.model;
 
 import java.io.Serializable;
 
-/**
- * Created by mertsimsek on 20/03/15.
- */
-public class App implements Serializable{
+public class App implements Serializable {
 
     private int appId;
     private String appName;
@@ -75,10 +72,10 @@ public class App implements Serializable{
 
     @Override
     public String toString() {
-        return  "App id :" + appId + "\n"+
-                "App Name  :" + appName + "\n"+
-                "App Description :" + appDescription + "\n"+
-                "App Image URL :" + appImageUrl + "\n"+
+        return "App id :" + appId + "\n" +
+                "App Name  :" + appName + "\n" +
+                "App Description :" + appDescription + "\n" +
+                "App Image URL :" + appImageUrl + "\n" +
                 "App Download URL:" + appDownloadUrl + "\n";
     }
 }

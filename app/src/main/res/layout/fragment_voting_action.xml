@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageview_menu"
@@ -11,7 +11,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
-        android:background="@drawable/icon_menu" />
+        android:background="@drawable/icon_menu"/>
 
     <RelativeLayout
         android:id="@+id/layout_app_image"
@@ -24,10 +24,10 @@
             android:id="@+id/imageview_app_image"
             android:layout_width="190dp"
             android:layout_height="190dp"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/app_logo"
             app:siRadius="15dp"
-            app:siSquare="false"
-            android:layout_centerHorizontal="true"/>
+            app:siSquare="false"/>
 
     </RelativeLayout>
 
@@ -37,19 +37,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="90dp"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
         android:text="2048"
-        android:textSize="30sp" />
+        android:textSize="30sp"/>
 
     <LinearLayout
         android:id="@+id/layout_button_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/layout_app_image"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:padding="20dp">
 
         <ImageView
@@ -57,14 +57,14 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="20dp"
-            android:background="@drawable/icon_dislike_unselected" />
+            android:background="@drawable/icon_dislike_unselected"/>
 
         <ImageView
             android:id="@+id/image_like"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="20dp"
-            android:background="@drawable/icon_like_unselected" />
+            android:background="@drawable/icon_like_unselected"/>
 
     </LinearLayout>
 
@@ -72,10 +72,10 @@
         android:id="@+id/image_info"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:background="@drawable/icon_info"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/layout_button_set"
-        android:layout_marginTop="-20dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:background="@drawable/icon_info"/>
 
 
 </RelativeLayout>
