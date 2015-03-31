@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.activity.TwitterLoginActivity;
 import co.mobiwise.indircom.listener.SocialAuthListener;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.utils.SocialConstants;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -117,7 +118,7 @@ public class TwitterLoginFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = co.mobiwise.indircom.utils.MaterialDialog.newInstance(getActivity()).createScanningDialog(getActivity().getResources().getString(R.string.loading_page_message), getActivity());
+            dialog = MaterialDesignDialog.newInstance(getActivity()).createScanningDialog(getString(R.string.loading_page_message));
             dialog.show();
         }
 

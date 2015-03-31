@@ -26,6 +26,7 @@ import co.mobiwise.indircom.listener.AppFetchControllerListener;
 import co.mobiwise.indircom.listener.VotingActionFragmentCallback;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 
 public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener {
@@ -170,7 +171,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         /**
          * start showing dialog when app fetching starts
          */
-        materialDialog = co.mobiwise.indircom.utils.MaterialDialog.newInstance(getActivity()).createScanningDialog(getActivity().getResources().getString(R.string.fetching_app_message), getActivity());
+        materialDialog = MaterialDesignDialog.newInstance(getActivity()).createScanningDialog(getString(R.string.fetching_app_message));
         materialDialog.show();
     }
 
