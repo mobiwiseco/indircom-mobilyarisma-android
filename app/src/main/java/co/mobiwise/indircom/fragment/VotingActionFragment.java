@@ -154,11 +154,19 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
                 vote = ApiConstants.LIKE;
                 imageviewLike.setBackgroundResource(R.drawable.icon_like_selected);
                 animateVoteImagesOnVote(imageviewLike);
+                /**
+                 * set like or dislike and add app request queue.
+                 */
+                sendUserVote(app, vote);
                 break;
             case R.id.image_dislike:
                 vote = ApiConstants.DISLIKE;
                 imageviewDislike.setBackgroundResource(R.drawable.icon_dislike_selected);
                 animateVoteImagesOnVote(imageviewDislike);
+                /**
+                 * set like or dislike and add app request queue.
+                 */
+                sendUserVote(app, vote);
                 break;
             case R.id.imageview_menu:
                 //Creating the instance of PopupMenu
@@ -183,12 +191,19 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.image_info:
                 openAppDetailPage();
+                break;
             default:
                 break;
         }
-        /**
-         * set like or dislike and add app request queue.
-         */
+    }
+
+    /**
+     * set like or dislike and add app request queue.
+     *
+     * @param app  voted app instance
+     * @param vote vote type like=1 or dislike =0
+     */
+    private void sendUserVote(App app, int vote) {
         app.setUserVote(vote);
         VoteRequestQueue.getInstance(getActivity().getApplicationContext()).addVote(app);
     }
