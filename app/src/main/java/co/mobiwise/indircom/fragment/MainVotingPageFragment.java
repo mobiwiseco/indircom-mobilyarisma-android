@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 
 import co.mobiwise.indircom.R;
@@ -24,6 +26,7 @@ import co.mobiwise.indircom.listener.AppFetchControllerListener;
 import co.mobiwise.indircom.listener.VotingActionFragmentCallback;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.model.User;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 
 public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener {
@@ -56,6 +59,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
      * Tag to log.
      */
     private String TAG = "MainVotingPageFragment";
+
+    private MaterialDialog materialDialog;
 
     public MainVotingPageFragment() {
     }
@@ -163,7 +168,11 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onAppsStartFetching() {
-        //TODO start showing dialog.
+        /**
+         * start showing dialog when app fetching starts
+         */
+        materialDialog = MaterialDesignDialog.newInstance(getActivity()).createScanningDialog(getString(R.string.fetching_app_message));
+        materialDialog.show();
     }
 
     @Override
@@ -172,7 +181,12 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         if (apps.size() == 0) {
             showEmptyPageItems();
         } else {
-            //TODO dismiss dialog.
+            /**
+             *  dismiss dialog when app fetching completed
+             */
+            if (materialDialog != null) {
+                materialDialog.cancel();
+            }
         }
     }
 
