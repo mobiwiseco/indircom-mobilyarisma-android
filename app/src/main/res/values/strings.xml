@@ -23,6 +23,7 @@
     <string name="congrats_content">Tüm uygulamaları oyladınız. Uygulamalara destek olduğunuz için teşekkür ederiz. Dilerseniz uygulamamızı kaldırabilirsiniz.</string>
     <string name="app_version">Application Version</string>
     <string name="fetching_app_message">Oylanacak uygulama listesi yüklenirken lütfen bekleyiniz.</string>
+    <string name="user_registration_loading_message">Kaydınız yapılırken lütfen bekleyiniz</string>
 
 
 </resources>

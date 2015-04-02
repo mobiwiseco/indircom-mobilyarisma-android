@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.Session;
 
 import co.mobiwise.indircom.R;
@@ -19,12 +20,15 @@ import co.mobiwise.indircom.listener.RegistrationListener;
 import co.mobiwise.indircom.listener.SocialAuthListener;
 import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.Connectivity;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.utils.SocialConstants;
 
 public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
     private static final String TAG = "LoginActivity";
     private RelativeLayout facebook_login_layout, twitter_login_layout;
+    private MaterialDialog materialDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +117,11 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
      */
     @Override
     public void onUserRegistrationStarted() {
-        //TODO start loading dialog
+        /**
+         * start showing dialog when user registration starts
+         */
+        materialDialog = MaterialDesignDialog.newInstance(this).createScanningDialog(getString(R.string.user_registration_loading_message));
+        materialDialog.show();
     }
 
     /**
@@ -123,6 +131,12 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
      */
     @Override
     public void onUserRegistered(User user) {
+
+        //dismiss dialog when user registration completed
+        if (materialDialog != null) {
+            materialDialog.cancel();
+        }
+
         //Register auth info to shared preferences
         UserManager.getInstance(getApplicationContext()).userLoggedIn(user.getToken(), user.getAuth_id());
 

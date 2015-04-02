@@ -11,12 +11,28 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file('indircom.jks')
+            def console = System.console()
+            if (console != null) {
+                storePassword System.console().readLine("\nKeystore password: ")
+                keyAlias System.console().readLine("\nKey alias name: ")
+                keyPassword System.console().readLine("\nKey password: ")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+
+
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -41,3 +57,5 @@ dependencies {
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
 }
+
+

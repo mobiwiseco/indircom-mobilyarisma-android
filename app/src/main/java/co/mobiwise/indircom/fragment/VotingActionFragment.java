@@ -209,10 +209,18 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     }
 
     private void openAppAboutPage() {
-        //TODO needs animation to fragment transaction
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, AboutFragment.newInstance()).addToBackStack("AboutFragment")
-                .commit();
+        /**
+         * creating transaction for fragment
+         */
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        /**
+         * creating animation for transaction
+         */
+        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        ft.add(R.id.container, AboutFragment.newInstance(), "aboutFragment");
+        ft.addToBackStack("aboutFragment");
+        /** Start fragment */
+        ft.commitAllowingStateLoss();
     }
 
     @Override
