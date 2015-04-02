@@ -120,7 +120,8 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
         /**
          * start showing dialog when user registration starts
          */
-        materialDialog = MaterialDesignDialog.newInstance(this).createScanningDialog(getString(R.string.user_registration_loading_message));
+        materialDialog = MaterialDesignDialog.newInstance(this)
+                .createScanningDialog(getString(R.string.user_registration_loading_message));
         materialDialog.show();
     }
 
