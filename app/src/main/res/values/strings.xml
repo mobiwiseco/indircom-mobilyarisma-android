@@ -16,7 +16,7 @@
     <string name="app_category_place_holder">indircom app category</string>
     <string name="app_description_placeholder">indircom_app_description</string>
     <string name="app_download_message">İNDİR</string>
-    <string name="cannot_download_app">Bu uygulama işletim sisteminiz ile uyumlu değildir.</string>
+    <string name="cannot_download_app">Bu uygulama sadece iOS platformu için yayındadır.</string>
 
     <!-- Empty page texts when all apps voted -->
     <string name="congrats_header">TEBRİKLER!</string>
