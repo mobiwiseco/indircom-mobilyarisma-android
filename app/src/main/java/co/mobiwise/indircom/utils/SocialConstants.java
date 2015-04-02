@@ -22,4 +22,9 @@ public class SocialConstants {
     public static final int TWITTER_REQUEST_CODE = 65536;
     public static final int FACEBOOK_REQUEST_CODE = 64206;
 
+
+    //facebook
+    public static final String FACEBOOK_EMAIL = "email";
+
+
 }

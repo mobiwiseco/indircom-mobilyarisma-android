@@ -11,8 +11,12 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.mobiwise.indircom.listener.SocialAuthListener;
 import co.mobiwise.indircom.model.User;
+import co.mobiwise.indircom.utils.SocialConstants;
 
 public class FacebookLoginFragment extends Fragment implements Session.StatusCallback {
 
@@ -55,6 +59,7 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
                 user.setAuth_id(graphUser.getId());
                 user.setName(graphUser.getName());
                 user.setSurname(graphUser.getLastName());
+                user.setEmail(graphUser.asMap().get(SocialConstants.FACEBOOK_EMAIL).toString());
 
                 //Notify social auth listener by user.
                 socialAuthListener.onSocialUserFetched(user);
@@ -65,7 +70,18 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Session.openActiveSession(getActivity(), true, this);
+        /**
+         * we need to get permission to have user' s infos
+         */
+        List<String> permissions = new ArrayList<>();
+        /**
+         * add email permission
+         */
+        permissions.add("email");
+        /**
+         * open active session with permissions
+         */
+        Session.openActiveSession(getActivity(), true, permissions, this);
     }
 
     @Override
