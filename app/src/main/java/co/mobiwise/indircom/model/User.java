@@ -64,7 +64,9 @@ public class User {
     public String toString() {
         return "Name : " + name + "\n" +
                 "Surname : " + surname + "\n" +
+                "E mail : " + email + "\n" +
                 "Auth ID : " + auth_id +
                 "Token : " + token;
+
     }
 }
