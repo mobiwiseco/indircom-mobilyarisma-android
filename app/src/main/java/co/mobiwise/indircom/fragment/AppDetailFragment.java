@@ -113,11 +113,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-        if (TextUtils.isEmpty(downloadLink)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !TextUtils.isEmpty(downloadLink);
     }
 
     @Override
