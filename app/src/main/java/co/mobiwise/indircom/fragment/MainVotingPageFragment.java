@@ -5,8 +5,10 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -29,13 +31,13 @@ import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 
-public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener {
+public class MainVotingPageFragment extends Fragment implements VotingActionFragmentCallback, AppFetchControllerListener, View.OnClickListener {
 
     /**
      * To achieve mPager from MainActivity, define as static
      * The pager widget
      */
-    private static ViewPager mPager;
+    private ViewPager mPager;
 
     /**
      * provides the pages to the view pager widget.
@@ -48,6 +50,10 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     private ImageView imageviewCongrats;
     private RobotoMediumTextView textviewCongratsHeader, textviewCongratsContent;
 
+    /**
+     * Menu widget
+     */
+    private ImageView imageviewMenu;
 
     /**
      * Animations for empty page transition.
@@ -82,6 +88,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         imageviewCongrats = (ImageView) rootView.findViewById(R.id.imageview_big_like);
         textviewCongratsHeader = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats);
         textviewCongratsContent = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats_content);
+        imageviewMenu = (ImageView) rootView.findViewById(R.id.imageview_menu);
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -97,6 +104,9 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         fadeOut = new AlphaAnimation(0.8f, 0);
         fadeOut.setInterpolator(new DecelerateInterpolator());
         fadeOut.setDuration(200);
+
+        //set listeners to widget
+        imageviewMenu.setOnClickListener(this);
 
         return rootView;
     }
@@ -205,5 +215,41 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         imageviewCongrats.startAnimation(fadeIn);
         textviewCongratsContent.startAnimation(fadeIn);
         textviewCongratsHeader.startAnimation(fadeIn);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imageview_menu:
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(getActivity(), imageviewMenu);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.about:
+                                openAppAboutPage();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                //showing popup menu
+                popup.show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void openAppAboutPage() {
+        //TODO needs animation to fragment transaction
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, AboutFragment.newInstance()).addToBackStack("AboutFragment")
+                .commit();
     }
 }

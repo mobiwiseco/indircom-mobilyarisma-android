@@ -3,6 +3,7 @@ package co.mobiwise.indircom.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import co.mobiwise.indircom.R;
+import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
 import co.mobiwise.indircom.views.RobotoTextView;
@@ -26,10 +28,8 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     /**
      * The argument keys
      */
-    public static final String APP_NAME = "appName";
-    public static final String APP_DESCRIPTION = "appDescription";
-    public static final String APP_DOWNLOAD_LINK = "appDownloadLink";
-    public static final String APP_IMAGE_DOWNLOAD_LINK = "appImageDownloadLink";
+    private static final String ARG_APP = "app";
+
     /**
      * Views
      */
@@ -39,12 +39,9 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     private RelativeLayout layoutAppDownload;
     private ImageView imageViewBack;
     /**
-     * The argument values
+     * Passed app
      */
-    private String mAppName;
-    private String mAppDescription;
-    private String mAppDownloadLink;
-    private String mAppImageDownloadLink;
+    private App app;
 
     public AppDetailFragment() {
     }
@@ -53,13 +50,10 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
      * Static factory method that returns the
      * new fragment to the client.
      */
-    public static AppDetailFragment newInstance(String appName, String mAppDescription, String appDownloadLink, String appImageDownloadURL) {
+    public static AppDetailFragment newInstance(Parcelable parcelable) {
         AppDetailFragment appDetailFragment = new AppDetailFragment();
         Bundle args = new Bundle();
-        args.putString(APP_NAME, appName);
-        args.putString(APP_DESCRIPTION, mAppDescription);
-        args.putString(APP_DOWNLOAD_LINK, appDownloadLink);
-        args.putString(APP_IMAGE_DOWNLOAD_LINK, appImageDownloadURL);
+        args.putParcelable(ARG_APP, parcelable);
         appDetailFragment.setArguments(args);
         return appDetailFragment;
     }
@@ -75,10 +69,7 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAppName = getArguments().getString(APP_NAME);
-        mAppDescription = getArguments().getString(APP_DESCRIPTION);
-        mAppDownloadLink = getArguments().getString(APP_DOWNLOAD_LINK);
-        mAppImageDownloadLink = getArguments().getString(APP_IMAGE_DOWNLOAD_LINK);
+        app = getArguments().getParcelable("app");
     }
 
     /**
@@ -95,10 +86,10 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
         layoutAppDownload = (RelativeLayout) view.findViewById(R.id.layout_app_download);
         imageViewBack = (ImageView) view.findViewById(R.id.imageview_back);
 
-        textviewAppName.setText(mAppName);
-        textviewAppDescription.setText(mAppDescription);
+        textviewAppName.setText(app.getAppName());
+        textviewAppDescription.setText(app.getAppDescription());
 
-        Picasso.with(getActivity().getApplicationContext()).load(mAppImageDownloadLink).into(imageviewAppDetailImage);
+        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewAppDetailImage);
 
         layoutAppDownload.setOnClickListener(this);
         imageViewBack.setOnClickListener(this);
@@ -127,11 +118,11 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
                  * check the internet connection
                  */
                 if (Connectivity.isConnected(getActivity().getApplicationContext())) {
-                    if (validateDownloadURL(mAppDownloadLink)) {
+                    if (validateDownloadURL(app.getAppDownloadUrl())) {
                         /**
                          * startActivity
                          */
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mAppDownloadLink)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(app.getAppDownloadUrl())));
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.cannot_download_app), Toast.LENGTH_SHORT).show();
                     }

@@ -30,11 +30,8 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     /**
      * The argument keys
      */
-    public static final String ARG_APP_ID = "app_id";
-    public static final String ARG_APP_NAME = "app_name";
-    public static final String ARG_APP_DESCRIPTION = "app_description";
-    public static final String ARG_APP_DOWNLOAD_URL = "app_download_url";
-    public static final String ARG_APP_IMAGE_URL = "app_image_url";
+    private static final String ARG_APP = "app";
+
     /**
      * TAG to log.
      */
@@ -54,10 +51,9 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     private ImageView imageViewMenu;
 
     /**
-     * The fragment's values to show users
+     * The fragment's app
      */
-    private int mAppId;
-    private String mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl;
+    private App app;
 
     public VotingActionFragment() {
     }
@@ -71,11 +67,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          * Puts app values to bundle
          */
         Bundle args = new Bundle();
-        args.putInt(ARG_APP_ID, app.getAppId());
-        args.putString(ARG_APP_NAME, app.getAppName());
-        args.putString(ARG_APP_DESCRIPTION, app.getAppDescription());
-        args.putString(ARG_APP_DOWNLOAD_URL, app.getAppDownloadUrl());
-        args.putString(ARG_APP_IMAGE_URL, app.getAppImageUrl());
+        args.putParcelable(ARG_APP,app);
         votingActionFragment.setArguments(args);
         return votingActionFragment;
     }
@@ -85,14 +77,9 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
 
         /**
-         * Gets app values from bundle.
+         * Gets app parcelable from bundle.
          */
-        mAppId = getArguments().getInt(ARG_APP_ID);
-        mAppName = getArguments().getString(ARG_APP_NAME);
-        mAppDownloadUrl = getArguments().getString(ARG_APP_DOWNLOAD_URL);
-        mAppImageUrl = getArguments().getString(ARG_APP_IMAGE_URL);
-        mAppDescription = getArguments().getString(ARG_APP_DESCRIPTION);
-
+        app = getArguments().getParcelable("app");
     }
 
     @Override
@@ -130,8 +117,9 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         /**
          * Load values to widgets
          */
-        Picasso.with(getActivity().getApplicationContext()).load(mAppImageUrl).into(imageviewApp);
-        textviewAppName.setText(mAppName);
+        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewApp);
+        textviewAppName.setText(app.getAppName());
+
     }
 
     /**
@@ -144,7 +132,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         /**
          *create app object with values
          */
-        App app = new App(mAppId, mAppName, mAppDescription, mAppImageUrl, mAppDownloadUrl);
+
         int vote = 0;
         /**
          * On button click cases.
@@ -167,27 +155,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
                  * set like or dislike and add app request queue.
                  */
                 sendUserVote(app, vote);
-                break;
-            case R.id.imageview_menu:
-                //Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(getActivity(), imageViewMenu);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-
-                        switch (menuItem.getItemId()) {
-                            case R.id.about:
-                                openAppAboutPage();
-                                break;
-                        }
-                        return true;
-                    }
-                });
-                //showing popup menu
-                popup.show();
                 break;
             case R.id.image_info:
                 openAppDetailPage();
@@ -288,7 +255,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          * creating animation for transaction
          */
         ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        ft.add(R.id.container, AppDetailFragment.newInstance(mAppName, mAppDescription, mAppDownloadUrl, mAppImageUrl), "appDetailFragment");
+        ft.add(R.id.container, AppDetailFragment.newInstance(app), "appDetailFragment");
         ft.addToBackStack("appDetailFragment");
         /** Start fragment */
         ft.commitAllowingStateLoss();
