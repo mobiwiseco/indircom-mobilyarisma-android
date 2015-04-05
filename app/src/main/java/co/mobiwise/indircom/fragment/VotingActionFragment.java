@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,7 +46,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     private ImageView imageviewDislike;
     private ImageView imageviewInfo;
     private RobotoMediumTextView textviewAppName;
-    private ImageView imageViewMenu;
 
     /**
      * The fragment's app
@@ -67,7 +64,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
          * Puts app values to bundle
          */
         Bundle args = new Bundle();
-        args.putParcelable(ARG_APP,app);
+        args.putParcelable(ARG_APP, app);
         votingActionFragment.setArguments(args);
         return votingActionFragment;
     }
@@ -105,14 +102,12 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         imageviewApp = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
         imageviewLike = (ImageView) view.findViewById(R.id.image_like);
         imageviewDislike = (ImageView) view.findViewById(R.id.image_dislike);
-        imageViewMenu = (ImageView) view.findViewById(R.id.imageview_menu);
         imageviewInfo = (ImageView) view.findViewById(R.id.image_info);
         /**
          * sets click listeners
          */
         imageviewLike.setOnClickListener(this);
         imageviewDislike.setOnClickListener(this);
-        imageViewMenu.setOnClickListener(this);
         imageviewInfo.setOnClickListener(this);
         /**
          * Load values to widgets
@@ -173,21 +168,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     private void sendUserVote(App app, int vote) {
         app.setUserVote(vote);
         VoteRequestQueue.getInstance(getActivity().getApplicationContext()).addVote(app);
-    }
-
-    private void openAppAboutPage() {
-        /**
-         * creating transaction for fragment
-         */
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        /**
-         * creating animation for transaction
-         */
-        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        ft.add(R.id.container, AboutFragment.newInstance(), "aboutFragment");
-        ft.addToBackStack("aboutFragment");
-        /** Start fragment */
-        ft.commitAllowingStateLoss();
     }
 
     @Override
