@@ -102,12 +102,14 @@ public class Api {
             public void onResponse(String response) {
 
                 try {
+                    Log.v(TAG, response);
                     JSONObject responseJson = new JSONObject(response.toString()).getJSONArray(ApiConstants.JSON_NAME_USER).getJSONObject(0);
                     User user = new User();
                     user.setAuth_id(responseJson.getString(ApiConstants.USER_AUTH_ID));
                     user.setName(responseJson.getString(ApiConstants.NAME));
                     user.setSurname(responseJson.getString(ApiConstants.SURNAME));
                     user.setToken(responseJson.getString(ApiConstants.TOKEN));
+                    user.setEmail(responseJson.getString(ApiConstants.EMAIL));
 
                     if (registrationListener != null)
                         registrationListener.onUserRegistered(user);
@@ -121,7 +123,6 @@ public class Api {
             public void onErrorResponse(VolleyError error) {
 
                 //TODO Handle Error. Jokin' who cares.
-
             }
         }) {
             @Override
@@ -133,6 +134,7 @@ public class Api {
                 maps.put(ApiConstants.SURNAME, user.getSurname());
                 maps.put(ApiConstants.API_KEY, ApiConstants.SECRET_API_KEY);
                 maps.put(ApiConstants.USER_AUTH_ID, String.valueOf(user.getAuth_id()));
+                maps.put(ApiConstants.EMAIL, String.valueOf(user.getEmail()));
 
                 //return maps. Seriously.
                 return maps;
@@ -141,7 +143,6 @@ public class Api {
 
         //adds request to request queue
         requestQueue.add(registerRequest);
-
     }
 
     /**
@@ -160,11 +161,14 @@ public class Api {
         final String get_apps_url = ApiConstants.BASE_URL + ApiConstants.WEBSERVICE_URL + ApiConstants.VERSION +
                 "/" + String.valueOf(user_auth_id) + ApiConstants.METHOD_UNRATED;
 
+        Log.v(TAG, "user_auth_id : " + user_auth_id);
+
         StringRequest unvotedAppsRequest = new StringRequest(Request.Method.POST, get_apps_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
+                    Log.v(TAG, response);
                     ArrayList<App> appList = new ArrayList<>();
                     JSONObject appsJsonAll = new JSONObject(response);
 
@@ -192,7 +196,6 @@ public class Api {
 
                                 appList.add(app);
                             }
-
                         }
 
                         /**
@@ -201,12 +204,10 @@ public class Api {
                         if (appFetchingControllerListener != null) {
                             appFetchingControllerListener.onAppsFetchCompleted(appList);
                         }
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -221,12 +222,10 @@ public class Api {
                 //Put required params to maps
                 Map<String, String> maps = new HashMap<String, String>();
                 maps.put(ApiConstants.TOKEN, token);
-
                 //return maps. Seriously.
                 return maps;
             }
         };
-
         requestQueue.add(unvotedAppsRequest);
     }
 
@@ -265,7 +264,6 @@ public class Api {
                             voteListener.onVoteCompleted(app);
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -280,7 +278,6 @@ public class Api {
                 if (voteListener != null) {
                     voteListener.onErrorOccured();
                 }
-
             }
         }) {
             @Override

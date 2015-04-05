@@ -56,6 +56,8 @@ public class ApiConstants {
     public static String API_KEY = "api_key";
     public static String TOKEN = "token";
     public static String RATE = "rate";
+    public static String EMAIL = "email";
+
 
     /**
      * Return parameters
