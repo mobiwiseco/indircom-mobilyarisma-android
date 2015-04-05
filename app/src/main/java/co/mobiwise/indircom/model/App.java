@@ -1,8 +1,11 @@
 package co.mobiwise.indircom.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class App implements Serializable {
+public class App implements Serializable,Parcelable {
 
     private int appId;
     private String appName;
@@ -78,4 +81,48 @@ public class App implements Serializable {
                 "App Image URL :" + appImageUrl + "\n" +
                 "App Download URL:" + appDownloadUrl + "\n";
     }
+
+    public App(Parcel in){
+        String[] data = new String[6];
+
+        in.readStringArray(data);
+        this.appId = Integer.parseInt(data[0]);
+        this.appName = data[1];
+        this.appDescription = data[2];
+        this.appImageUrl = data[3];
+        this.appDownloadUrl = data[4];
+        this.userVote = Integer.parseInt(data[5]);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {String.valueOf(this.appId),
+                                            this.appName,
+                                            this.appDescription,
+                                            this.appImageUrl,
+                                            this.appDownloadUrl,
+                                            String.valueOf(this.userVote)});
+    }
+
+    public static final Parcelable.Creator CREATOR = new ClassLoaderCreator() {
+        @Override
+        public Object createFromParcel(Parcel source, ClassLoader loader) {
+            return new App(source);
+        }
+
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return new App(source);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new  App[size];
+        }
+    };
 }
