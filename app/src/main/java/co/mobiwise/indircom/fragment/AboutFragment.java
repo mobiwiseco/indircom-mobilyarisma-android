@@ -9,13 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.views.RobotoTextView;
 
 public class AboutFragment extends Fragment {
 
-    private RobotoTextView mTextViewAppVersion;
-    private ImageView mImageViewBack;
+    @InjectView(R.id.app_version)
+    RobotoTextView mTextViewAppVersion;
+
+    @InjectView(R.id.imageview_about_back)
+    ImageView mImageViewBack;
 
     public AboutFragment() {
     }
@@ -35,8 +40,8 @@ public class AboutFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_about, container, false);
 
-        mTextViewAppVersion = (RobotoTextView) rootView.findViewById(R.id.app_version);
-        mImageViewBack = (ImageView) rootView.findViewById(R.id.imageview_about_back);
+        ButterKnife.inject(this,rootView);
+
         mTextViewAppVersion.setText(getAppVersion());
 
         /**

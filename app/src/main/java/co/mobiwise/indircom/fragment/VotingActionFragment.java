@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +15,9 @@ import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
 import com.squareup.picasso.Picasso;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.api.ApiConstants;
 import co.mobiwise.indircom.controller.VoteRequestQueue;
@@ -36,19 +37,29 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      * TAG to log.
      */
     public static final String TAG = "VotingActionFragment";
+
     /**
      * To notify necessary method when vote action fragment process happen.
      */
     private VotingActionFragmentCallback votingActionFragmentCallback;
+
     /**
      * VotingActionFragment views
      */
-    private RoundedImageView imageviewApp;
-    private ImageView imageviewLike;
-    private ImageView imageviewDislike;
-    private ImageView imageviewInfo;
-    private RobotoMediumTextView textviewAppName;
-    private ImageView imageViewMenu;
+    @InjectView(R.id.imageview_app_image)
+    RoundedImageView imageviewApp;
+
+    @InjectView(R.id.image_like)
+    ImageView imageviewLike;
+
+    @InjectView(R.id.image_dislike)
+    ImageView imageviewDislike;
+
+    @InjectView(R.id.image_info)
+    ImageView imageviewInfo;
+
+    @InjectView(R.id.textview_app_name)
+    RobotoMediumTextView textviewAppName;
 
     /**
      * The fragment's app
@@ -63,12 +74,14 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      */
     public static VotingActionFragment newInstance(App app) {
         VotingActionFragment votingActionFragment = new VotingActionFragment();
+
         /**
          * Puts app values to bundle
          */
         Bundle args = new Bundle();
-        args.putParcelable(ARG_APP,app);
+        args.putParcelable(ARG_APP, app);
         votingActionFragment.setArguments(args);
+
         return votingActionFragment;
     }
 
@@ -85,41 +98,11 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
-        ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_voting_action, container, false);
-
-        initializeView(rootView);
-        return rootView;
-    }
-
-    /**
-     * method that initialize all Views
-     *
-     * @param view
-     */
-    private void initializeView(View view) {
-        /**
-         * Find views by id.
-         */
-        textviewAppName = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
-        imageviewApp = (RoundedImageView) view.findViewById(R.id.imageview_app_image);
-        imageviewLike = (ImageView) view.findViewById(R.id.image_like);
-        imageviewDislike = (ImageView) view.findViewById(R.id.image_dislike);
-        imageViewMenu = (ImageView) view.findViewById(R.id.imageview_menu);
-        imageviewInfo = (ImageView) view.findViewById(R.id.image_info);
-        /**
-         * sets click listeners
-         */
-        imageviewLike.setOnClickListener(this);
-        imageviewDislike.setOnClickListener(this);
-        imageViewMenu.setOnClickListener(this);
-        imageviewInfo.setOnClickListener(this);
-        /**
-         * Load values to widgets
-         */
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_voting_action, container, false);
+        ButterKnife.inject(this,rootView);
         Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewApp);
         textviewAppName.setText(app.getAppName());
-
+        return rootView;
     }
 
     /**
@@ -127,7 +110,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
      *
      * @param v
      */
-    @Override
+    @OnClick({R.id.image_like, R.id.image_dislike, R.id.image_info})
     public void onClick(View v) {
         /**
          *create app object with values
@@ -173,21 +156,6 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
     private void sendUserVote(App app, int vote) {
         app.setUserVote(vote);
         VoteRequestQueue.getInstance(getActivity().getApplicationContext()).addVote(app);
-    }
-
-    private void openAppAboutPage() {
-        /**
-         * creating transaction for fragment
-         */
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        /**
-         * creating animation for transaction
-         */
-        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        ft.add(R.id.container, AboutFragment.newInstance(), "aboutFragment");
-        ft.addToBackStack("aboutFragment");
-        /** Start fragment */
-        ft.commitAllowingStateLoss();
     }
 
     @Override
