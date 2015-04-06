@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.utils.Connectivity;
@@ -23,7 +26,7 @@ import co.mobiwise.indircom.views.RobotoMediumTextView;
 import co.mobiwise.indircom.views.RobotoTextView;
 
 
-public class AppDetailFragment extends Fragment implements View.OnClickListener {
+public class AppDetailFragment extends Fragment {
 
     /**
      * The argument keys
@@ -33,11 +36,24 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     /**
      * Views
      */
-    private RoundedImageView imageviewAppDetailImage;
-    private RobotoMediumTextView textviewAppName;
-    private RobotoTextView textviewAppCategory, textviewAppDescription;
-    private RelativeLayout layoutAppDownload;
-    private ImageView imageViewBack;
+    @InjectView(R.id.imageview_app_detail_image)
+    RoundedImageView imageviewAppDetailImage;
+
+    @InjectView(R.id.textview_app_name)
+    RobotoMediumTextView textviewAppName;
+
+    @InjectView(R.id.textview_app_category)
+    RobotoTextView textviewAppCategory;
+
+    @InjectView(R.id.textview_app_description)
+    RobotoTextView textviewAppDescription;
+
+    @InjectView(R.id.layout_app_download)
+    RelativeLayout layoutAppDownload;
+
+    @InjectView(R.id.imageview_back)
+    ImageView imageViewBack;
+
     /**
      * Passed app
      */
@@ -62,7 +78,13 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_app_detail, container, false);
-        initializeView(rootView);
+        ButterKnife.inject(this,rootView);
+
+        textviewAppName.setText(app.getAppName());
+        textviewAppDescription.setText(app.getAppDescription());
+
+        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewAppDetailImage);
+
         return rootView;
     }
 
@@ -70,29 +92,6 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = getArguments().getParcelable("app");
-    }
-
-    /**
-     * initialize views
-     *
-     * @param view
-     */
-    private void initializeView(View view) {
-
-        imageviewAppDetailImage = (RoundedImageView) view.findViewById(R.id.imageview_app_detail_image);
-        textviewAppName = (RobotoMediumTextView) view.findViewById(R.id.textview_app_name);
-        textviewAppCategory = (RobotoTextView) view.findViewById(R.id.textview_app_category);
-        textviewAppDescription = (RobotoTextView) view.findViewById(R.id.textview_app_description);
-        layoutAppDownload = (RelativeLayout) view.findViewById(R.id.layout_app_download);
-        imageViewBack = (ImageView) view.findViewById(R.id.imageview_back);
-
-        textviewAppName.setText(app.getAppName());
-        textviewAppDescription.setText(app.getAppDescription());
-
-        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewAppDetailImage);
-
-        layoutAppDownload.setOnClickListener(this);
-        imageViewBack.setOnClickListener(this);
     }
 
     /**
@@ -107,8 +106,8 @@ public class AppDetailFragment extends Fragment implements View.OnClickListener 
         return !TextUtils.isEmpty(downloadLink);
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.layout_app_download, R.id.imageview_back})
+    public void downloadApp(View v) {
         switch (v.getId()) {
             /**
              *  listener method for imageviewAppDetailImage. Opens Google Play App Page.

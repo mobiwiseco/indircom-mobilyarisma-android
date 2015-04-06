@@ -20,6 +20,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.adapter.ViewPagerAdapter;
 import co.mobiwise.indircom.api.Api;
@@ -37,7 +40,8 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
      * To achieve mPager from MainActivity, define as static
      * The pager widget
      */
-    private ViewPager mPager;
+    @InjectView(R.id.pager)
+    ViewPager mPager;
 
     /**
      * provides the pages to the view pager widget.
@@ -47,13 +51,20 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
     /**
      * Empty page items
      */
-    private ImageView imageviewCongrats;
-    private RobotoMediumTextView textviewCongratsHeader, textviewCongratsContent;
+    @InjectView(R.id.imageview_big_like)
+    ImageView imageviewCongrats;
+
+    @InjectView(R.id.textview_congrats)
+    RobotoMediumTextView textviewCongratsHeader;
+
+    @InjectView(R.id.textview_congrats_content)
+    RobotoMediumTextView textviewCongratsContent;
 
     /**
      * Menu widget
      */
-    private ImageView imageviewMenu;
+    @InjectView(R.id.imageview_menu)
+    ImageView imageviewMenu;
 
     /**
      * Animations for empty page transition.
@@ -85,13 +96,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_voting_page, container, false);
 
-        imageviewCongrats = (ImageView) rootView.findViewById(R.id.imageview_big_like);
-        textviewCongratsHeader = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats);
-        textviewCongratsContent = (RobotoMediumTextView) rootView.findViewById(R.id.textview_congrats_content);
-        imageviewMenu = (ImageView) rootView.findViewById(R.id.imageview_menu);
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) rootView.findViewById(R.id.pager);
+        ButterKnife.inject(this,rootView);
 
         /**
          * Fade in/out animation initialization
@@ -104,9 +109,6 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         fadeOut = new AlphaAnimation(0.8f, 0);
         fadeOut.setInterpolator(new DecelerateInterpolator());
         fadeOut.setDuration(200);
-
-        //set listeners to widget
-        imageviewMenu.setOnClickListener(this);
 
         return rootView;
     }
@@ -187,16 +189,23 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
 
     @Override
     public void onAppsFetchCompleted(ArrayList<App> apps) {
+        /**
+         * set app list to adapter
+         */
         mPagerAdapter.setAppList(apps);
+
+        /**
+         * No items to vote
+         */
         if (apps.size() == 0) {
             showEmptyPageItems();
-        } else {
-            /**
-             *  dismiss dialog when app fetching completed
-             */
-            if (materialDialog != null) {
-                materialDialog.cancel();
-            }
+        }
+
+        /**
+         *  dismiss dialog when app fetching completed
+         */
+        if (materialDialog != null) {
+            materialDialog.cancel();
         }
     }
 
@@ -217,7 +226,7 @@ public class MainVotingPageFragment extends Fragment implements VotingActionFrag
         textviewCongratsHeader.startAnimation(fadeIn);
     }
 
-    @Override
+    @OnClick(R.id.imageview_menu)
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_menu:

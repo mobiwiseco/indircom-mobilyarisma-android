@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.Session;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.api.Api;
 import co.mobiwise.indircom.controller.UserManager;
@@ -26,9 +28,14 @@ import co.mobiwise.indircom.utils.SocialConstants;
 public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
     private static final String TAG = "LoginActivity";
-    private RelativeLayout facebook_login_layout, twitter_login_layout;
-    private MaterialDialog materialDialog;
 
+    @InjectView(R.id.layout_facebook_login)
+    RelativeLayout facebook_login_layout;
+
+    @InjectView(R.id.layout_twitter_login)
+    RelativeLayout twitter_login_layout;
+
+    private MaterialDialog materialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +48,8 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
         }
 
         setContentView(R.layout.activity_login);
-        initializeViews();
+        ButterKnife.inject(this);
         Api.getInstance(getApplicationContext()).registerRegistrationListener(this);
-
-    }
-
-    private void initializeViews() {
-        facebook_login_layout = (RelativeLayout) findViewById(R.id.layout_facebook_login);
-        twitter_login_layout = (RelativeLayout) findViewById(R.id.layout_twitter_login);
     }
 
     /**
