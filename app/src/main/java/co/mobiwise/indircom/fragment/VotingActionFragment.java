@@ -100,7 +100,7 @@ public class VotingActionFragment extends Fragment implements View.OnClickListen
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_voting_action, container, false);
         ButterKnife.inject(this,rootView);
-        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewApp);
+        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).placeholder(R.drawable.placeholder).into(imageviewApp);
         textviewAppName.setText(app.getAppName());
         return rootView;
     }
