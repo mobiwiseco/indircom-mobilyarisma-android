@@ -42,9 +42,6 @@ public class AppDetailFragment extends Fragment {
     @InjectView(R.id.textview_app_name)
     RobotoMediumTextView textviewAppName;
 
-    @InjectView(R.id.textview_app_category)
-    RobotoTextView textviewAppCategory;
-
     @InjectView(R.id.textview_app_description)
     RobotoTextView textviewAppDescription;
 
@@ -78,7 +75,7 @@ public class AppDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_app_detail, container, false);
-        ButterKnife.inject(this,rootView);
+        ButterKnife.inject(this, rootView);
 
         textviewAppName.setText(app.getAppName());
         textviewAppDescription.setText(app.getAppDescription());

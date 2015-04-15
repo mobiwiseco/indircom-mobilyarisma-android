@@ -41,23 +41,10 @@
                 android:textSize="20sp"/>
 
             <co.mobiwise.indircom.views.RobotoTextView
-                android:id="@+id/textview_app_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_app_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/app_category_place_holder"
-                android:textSize="16sp"/>
-
-            <co.mobiwise.indircom.views.RobotoTextView
                 android:id="@+id/textview_app_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_app_category"
+                android:layout_below="@+id/textview_app_name"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
