@@ -74,4 +74,9 @@ public class ApiConstants {
     public static String APP_IMAGE_URL = "app_image_url";
     public static String APP_DOWNLOAD_URL = "app_download_url";
 
+    /**
+     * app download link null constant
+     */
+    public static String APP_DOWNLOAD_LINK_NULL_CONSTANT = "null";
+
 }
