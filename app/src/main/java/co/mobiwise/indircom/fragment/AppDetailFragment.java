@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.siyamed.shapeimageview.RoundedImageView;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.mobiwise.indircom.R;
+import co.mobiwise.indircom.api.ApiConstants;
 import co.mobiwise.indircom.model.App;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.views.RobotoMediumTextView;
@@ -32,6 +36,7 @@ public class AppDetailFragment extends Fragment {
      * The argument keys
      */
     private static final String ARG_APP = "app";
+    private static final String TAG = "AppDetailFragment";
 
     /**
      * Views
@@ -50,6 +55,12 @@ public class AppDetailFragment extends Fragment {
 
     @InjectView(R.id.imageview_back)
     ImageView imageViewBack;
+
+    @InjectView(R.id.icon_download)
+    ImageView imageViewIconDownload;
+
+    @InjectView(R.id.textview_app_download)
+    TextView textviewAppDownload;
 
     /**
      * Passed app
@@ -80,8 +91,17 @@ public class AppDetailFragment extends Fragment {
         textviewAppName.setText(app.getAppName());
         textviewAppDescription.setText(app.getAppDescription());
 
-        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewAppDetailImage);
+        /**
+         * if URL is not validated by method, all the views should be gone.
+         */
+        Log.v(TAG, String.valueOf(app.getAppDownloadUrl()));
+        if (!validateDownloadURL(app.getAppDownloadUrl())) {
+            layoutAppDownload.setVisibility(View.GONE);
+            imageViewIconDownload.setVisibility(View.GONE);
+            textviewAppDownload.setVisibility(View.GONE);
+        }
 
+        Picasso.with(getActivity().getApplicationContext()).load(app.getAppImageUrl()).into(imageviewAppDetailImage);
         return rootView;
     }
 
@@ -100,7 +120,7 @@ public class AppDetailFragment extends Fragment {
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-        return !TextUtils.isEmpty(downloadLink);
+        return !TextUtils.isEmpty(downloadLink) && !ApiConstants.APP_DOWNLOAD_LINK_NULL_CONSTANT.equals(downloadLink);
     }
 
     @OnClick({R.id.layout_app_download, R.id.imageview_back})
@@ -114,14 +134,10 @@ public class AppDetailFragment extends Fragment {
                  * check the internet connection
                  */
                 if (Connectivity.isConnected(getActivity().getApplicationContext())) {
-                    if (validateDownloadURL(app.getAppDownloadUrl())) {
-                        /**
-                         * startActivity
-                         */
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(app.getAppDownloadUrl())));
-                    } else {
-                        Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.cannot_download_app), Toast.LENGTH_SHORT).show();
-                    }
+                    /**
+                     * startActivity
+                     */
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(app.getAppDownloadUrl())));
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), getActivity().getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                 }
