@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,7 @@ public class AppDetailFragment extends Fragment {
      * The argument keys
      */
     private static final String ARG_APP = "app";
+    private static final String TAG = "AppDetailFragment";
 
     /**
      * Views
@@ -90,6 +94,7 @@ public class AppDetailFragment extends Fragment {
         /**
          * if URL is not validated by method, all the views should be gone.
          */
+        Log.v(TAG, String.valueOf(app.getAppDownloadUrl()));
         if (!validateDownloadURL(app.getAppDownloadUrl())) {
             layoutAppDownload.setVisibility(View.GONE);
             imageViewIconDownload.setVisibility(View.GONE);
@@ -115,7 +120,7 @@ public class AppDetailFragment extends Fragment {
      * @return
      */
     public boolean validateDownloadURL(String downloadLink) {
-        return !downloadLink.equals(ApiConstants.APP_DOWNLOAD_LINK_NULL_CONSTANT);
+        return !TextUtils.isEmpty(downloadLink) && !ApiConstants.APP_DOWNLOAD_LINK_NULL_CONSTANT.equals(downloadLink);
     }
 
     @OnClick({R.id.layout_app_download, R.id.imageview_back})
