@@ -36,6 +36,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2a5af3925bf61b5a96a98620bf3a00ed8a7ddf02" />
     </application>
 
 

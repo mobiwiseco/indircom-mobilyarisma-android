@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.Session;
 
 import butterknife.ButterKnife;
@@ -24,6 +25,7 @@ import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.Connectivity;
 import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.utils.SocialConstants;
+import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
@@ -40,6 +42,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         if (UserManager.getInstance(getApplicationContext()).isLogin()) {
             Intent i = new Intent(this, MainActivity.class);
