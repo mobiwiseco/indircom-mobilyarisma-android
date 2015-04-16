@@ -89,11 +89,13 @@ public class TwitterLoginFragment extends Fragment {
                         //Gets twitter user info
                         User user_4j = mTwitter.showUser(mTwitter.getScreenName());
 
+                        int index = user_4j.getName().lastIndexOf(" ");
+
                         //Creates user data model
                         co.mobiwise.indircom.model.User user_model = new co.mobiwise.indircom.model.User();
                         user_model.setAuth_id(String.valueOf(user_4j.getId()));
-                        user_model.setName(user_4j.getName().substring(0, user_4j.getName().indexOf(" ")));
-                        user_model.setSurname(user_4j.getName().substring(user_4j.getName().indexOf(" ")));
+                        user_model.setName(user_4j.getName().substring(0, index));
+                        user_model.setSurname(user_4j.getName().substring(index));
 
                         //notify @TwitterAuthListener by user data model
                         socialAuthListener.onSocialUserFetched(user_model);

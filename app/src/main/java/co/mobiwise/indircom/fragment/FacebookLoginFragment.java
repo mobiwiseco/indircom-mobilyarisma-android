@@ -3,6 +3,7 @@ package co.mobiwise.indircom.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.facebook.Request;
@@ -57,7 +58,10 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
                 //initialize user
                 User user = new User();
                 user.setAuth_id(graphUser.getId());
-                user.setName(graphUser.getName());
+                if (TextUtils.isEmpty(graphUser.getMiddleName()))
+                    user.setName(graphUser.getFirstName());
+                else
+                    user.setName(graphUser.getFirstName() + " " + graphUser.getMiddleName());
                 user.setSurname(graphUser.getLastName());
                 user.setEmail(graphUser.asMap().get(SocialConstants.FACEBOOK_EMAIL).toString());
 
