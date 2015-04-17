@@ -63,7 +63,11 @@ public class FacebookLoginFragment extends Fragment implements Session.StatusCal
                 else
                     user.setName(graphUser.getFirstName() + " " + graphUser.getMiddleName());
                 user.setSurname(graphUser.getLastName());
-                user.setEmail(graphUser.asMap().get(SocialConstants.FACEBOOK_EMAIL).toString());
+                /**
+                 * if user refuses to give mail adress :(
+                 */
+                if (graphUser.asMap().get(SocialConstants.FACEBOOK_EMAIL) != null)
+                    user.setEmail(graphUser.asMap().get(SocialConstants.FACEBOOK_EMAIL).toString());
 
                 //Notify social auth listener by user.
                 socialAuthListener.onSocialUserFetched(user);
