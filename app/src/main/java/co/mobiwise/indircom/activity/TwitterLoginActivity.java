@@ -8,24 +8,24 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.utils.SocialConstants;
 
-/**
- * Created by mac on 19/03/15.
- */
 public class TwitterLoginActivity extends ActionBarActivity {
 
-    WebView webView;
-    WebSettings webSettings;
     public static final String TAG = TwitterLoginActivity.class.getSimpleName();
 
+    @InjectView(R.id.twitter)
+    WebView webView;
+    WebSettings webSettings;
 
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_twitter_login);
+        ButterKnife.inject(this);
 
-        webView = (WebView) findViewById(R.id.twitter);
         webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {

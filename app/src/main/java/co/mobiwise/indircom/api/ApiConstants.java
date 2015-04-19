@@ -1,8 +1,5 @@
 package co.mobiwise.indircom.api;
 
-/**
- * Created by mac on 13/03/15.
- */
 public class ApiConstants {
 
     /**
@@ -44,7 +41,12 @@ public class ApiConstants {
     public static String OK = "200";
     public static String NOT_FOUND = "404";
 
-
+    /**
+     * Return status
+     */
+    public static String STATUS_NO_APPS = "2";
+    public static String STATUS_APPS = "1";
+    public static String STATUS_ERROR = "0";
     /**
      * Post parameters
      */
@@ -54,6 +56,8 @@ public class ApiConstants {
     public static String API_KEY = "api_key";
     public static String TOKEN = "token";
     public static String RATE = "rate";
+    public static String EMAIL = "email";
+
 
     /**
      * Return parameters
@@ -69,5 +73,10 @@ public class ApiConstants {
     public static String APP_DESCRIPTION = "app_description";
     public static String APP_IMAGE_URL = "app_image_url";
     public static String APP_DOWNLOAD_URL = "app_download_url";
+
+    /**
+     * app download link null constant
+     */
+    public static String APP_DOWNLOAD_LINK_NULL_CONSTANT = "null";
 
 }

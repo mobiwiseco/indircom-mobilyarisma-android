@@ -1,8 +1,5 @@
 package co.mobiwise.indircom.utils;
 
-/**
- * Created by mac on 18/03/15.
- */
 public class SocialConstants {
 
     /*Twitter API Constants*/
@@ -24,5 +21,10 @@ public class SocialConstants {
     //Social Constans
     public static final int TWITTER_REQUEST_CODE = 65536;
     public static final int FACEBOOK_REQUEST_CODE = 64206;
+
+
+    //facebook
+    public static final String FACEBOOK_EMAIL = "email";
+
 
 }

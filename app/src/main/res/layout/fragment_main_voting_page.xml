@@ -9,15 +9,53 @@
         android:id="@+id/imageview_menu"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/icon_menu"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:background="@drawable/icon_menu" />
 
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <ImageView
+        android:id="@+id/imageview_big_like"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/icon_big_like"
+        android:visibility="invisible" />
+
+
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_congrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageview_big_like"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/congrats_header"
+        android:textColor="@color/color_gray"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+
+    <co.mobiwise.indircom.views.RobotoMediumTextView
+        android:id="@+id/textview_congrats_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_congrats"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="@string/congrats_content"
+        android:textSize="17sp"
+        android:visibility="invisible" />
+
+    <android.support.v4.view.ViewPager
         android:id="@+id/pager"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/imageview_menu" />
 
 </RelativeLayout>

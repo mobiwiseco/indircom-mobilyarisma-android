@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <com.github.siyamed.shapeimageview.RoundedImageView
-        android:id="@+id/imageview_app_image"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:src="@drawable/app_logo"
-        android:layout_centerHorizontal="true"
+    <RelativeLayout
+        android:id="@+id/layout_app_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textview_app_name"
-        app:siRadius="15dp"
-        app:siSquare="false" />
+        android:layout_centerHorizontal="true">
+
+        <com.github.siyamed.shapeimageview.RoundedImageView
+            android:id="@+id/imageview_app_image"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/app_logo"
+            app:siRadius="15dp"
+            app:siSquare="false"
+            app:siBorderColor="@android:color/transparent"
+            app:siBorderWidth="0dp"
+            app:siBorderAlpha="0"/>
+
+    </RelativeLayout>
+
 
     <co.mobiwise.indircom.views.RobotoMediumTextView
         android:id="@+id/textview_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="90dp"
+        android:gravity="center_horizontal"
         android:text="2048"
-        android:textSize="30sp" />
+        android:textSize="30sp"/>
 
     <LinearLayout
         android:id="@+id/layout_button_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_below="@+id/layout_app_image"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/imageview_app_image"
-        android:layout_marginTop="30dp"
+        android:gravity="center"
         android:padding="20dp">
 
         <ImageView
@@ -47,9 +58,18 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="20dp"
-            android:background="@drawable/icon_like_unselected" />
+            android:background="@drawable/icon_like_unselected"/>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_info"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/layout_button_set"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:background="@drawable/icon_info"/>
 
 
 </RelativeLayout>

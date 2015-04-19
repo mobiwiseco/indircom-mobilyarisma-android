@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">"indir.com "</string>
+    <string name="app_name">"indir.com Yarışma"</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="login_facebook">Facebook ile giriş</string>
@@ -16,6 +16,14 @@
     <string name="app_category_place_holder">indircom app category</string>
     <string name="app_description_placeholder">indircom_app_description</string>
     <string name="app_download_message">İNDİR</string>
+    <string name="cannot_download_app">Bu uygulama sadece iOS platformu için yayındadır.</string>
+
+    <!-- Empty page texts when all apps voted -->
+    <string name="congrats_header">TEBRİKLER!</string>
+    <string name="congrats_content">Tüm uygulamaları oyladınız. Uygulamalara destek olduğunuz için teşekkür ederiz. Gelişmeleri "www.indir.com/yarisma" adresinden takip edebilirsiniz.</string>
+    <string name="app_version">Application Version</string>
+    <string name="fetching_app_message">Oylanacak uygulama listesi yüklenirken lütfen bekleyiniz.</string>
+    <string name="user_registration_loading_message">Kullanıcı kayıt edilirken lütfen bekleyiniz</string>
 
 
 </resources>

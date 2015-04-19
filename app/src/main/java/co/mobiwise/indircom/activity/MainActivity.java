@@ -5,10 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.fragment.MainVotingPageFragment;
-import co.mobiwise.indircom.listener.ConnectivityChangeListener;
 
 
-public class MainActivity extends ActionBarActivity implements ConnectivityChangeListener {
+public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -23,13 +22,4 @@ public class MainActivity extends ActionBarActivity implements ConnectivityChang
         }
     }
 
-    @Override
-    public void onConnectionLost() {
-
-    }
-
-    @Override
-    public void onConnectionFind() {
-
-    }
 }

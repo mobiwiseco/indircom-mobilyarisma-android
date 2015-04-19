@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.Session;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.api.Api;
 import co.mobiwise.indircom.controller.UserManager;
@@ -19,35 +23,36 @@ import co.mobiwise.indircom.listener.RegistrationListener;
 import co.mobiwise.indircom.listener.SocialAuthListener;
 import co.mobiwise.indircom.model.User;
 import co.mobiwise.indircom.utils.Connectivity;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.utils.SocialConstants;
+import io.fabric.sdk.android.Fabric;
 
-/**
- * Created by mac on 13/03/15.
- */
 public class LoginActivity extends ActionBarActivity implements SocialAuthListener, RegistrationListener {
 
     private static final String TAG = "LoginActivity";
-    private RelativeLayout facebook_login_layout, twitter_login_layout;
+
+    @InjectView(R.id.layout_facebook_login)
+    RelativeLayout facebook_login_layout;
+
+    @InjectView(R.id.layout_twitter_login)
+    RelativeLayout twitter_login_layout;
+
+    private MaterialDialog materialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
-        if(UserManager.getInstance(getApplicationContext()).isLogin()){
+        if (UserManager.getInstance(getApplicationContext()).isLogin()) {
             Intent i = new Intent(this, MainActivity.class);
             finish();
             startActivity(i);
         }
 
         setContentView(R.layout.activity_login);
-        initializeViews();
+        ButterKnife.inject(this);
         Api.getInstance(getApplicationContext()).registerRegistrationListener(this);
-
-    }
-
-    private void initializeViews() {
-        facebook_login_layout = (RelativeLayout) findViewById(R.id.layout_facebook_login);
-        twitter_login_layout = (RelativeLayout) findViewById(R.id.layout_twitter_login);
     }
 
     /**
@@ -96,6 +101,7 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
 
     /**
      * Notified when facebook or twitter user logged in.
+     *
      * @param user
      */
     @Override
@@ -115,15 +121,32 @@ public class LoginActivity extends ActionBarActivity implements SocialAuthListen
      */
     @Override
     public void onUserRegistrationStarted() {
-        //TODO start loading dialog
+        /**
+         * start showing dialog when user registration starts
+         */
+        LoginActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                materialDialog = MaterialDesignDialog.newInstance(LoginActivity.this)
+                        .createScanningDialog(getString(R.string.user_registration_loading_message));
+                materialDialog.show();
+            }
+        });
     }
 
     /**
      * Will be notified when user registration completed.
+     *
      * @param user
      */
     @Override
     public void onUserRegistered(User user) {
+
+        //dismiss dialog when user registration completed
+        if (materialDialog != null) {
+            materialDialog.cancel();
+        }
+
         //Register auth info to shared preferences
         UserManager.getInstance(getApplicationContext()).userLoggedIn(user.getToken(), user.getAuth_id());
 

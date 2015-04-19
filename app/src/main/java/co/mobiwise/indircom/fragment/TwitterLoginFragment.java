@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import co.mobiwise.indircom.R;
 import co.mobiwise.indircom.activity.TwitterLoginActivity;
 import co.mobiwise.indircom.listener.SocialAuthListener;
+import co.mobiwise.indircom.utils.MaterialDesignDialog;
 import co.mobiwise.indircom.utils.SocialConstants;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -21,9 +22,6 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-/**
- * Created by mac on 17/03/15.
- */
 public class TwitterLoginFragment extends Fragment {
 
     private SocialAuthListener socialAuthListener;
@@ -91,11 +89,13 @@ public class TwitterLoginFragment extends Fragment {
                         //Gets twitter user info
                         User user_4j = mTwitter.showUser(mTwitter.getScreenName());
 
+                        int index = user_4j.getName().lastIndexOf(" ");
+
                         //Creates user data model
                         co.mobiwise.indircom.model.User user_model = new co.mobiwise.indircom.model.User();
                         user_model.setAuth_id(String.valueOf(user_4j.getId()));
-                        user_model.setName(user_4j.getName().substring(0, user_4j.getName().indexOf(" ")));
-                        user_model.setSurname(user_4j.getName().substring(user_4j.getName().indexOf(" ")));
+                        user_model.setName(user_4j.getName().substring(0, index));
+                        user_model.setSurname(user_4j.getName().substring(index));
 
                         //notify @TwitterAuthListener by user data model
                         socialAuthListener.onSocialUserFetched(user_model);
@@ -120,7 +120,7 @@ public class TwitterLoginFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = co.mobiwise.indircom.utils.MaterialDialog.newInstance(getActivity()).createScanningDialog(getActivity().getResources().getString(R.string.loading_page_message), getActivity());
+            dialog = MaterialDesignDialog.newInstance(getActivity()).createScanningDialog(getString(R.string.loading_page_message));
             dialog.show();
         }
 
